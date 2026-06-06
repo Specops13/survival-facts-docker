@@ -3,160 +3,894 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Survival Facts</title>
+  <title>Survival Reference Wiki</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --bg: #0e1117;
+      --surface: #161b22;
+      --border: #21262d;
+      --accent: #58a6ff;
+      --accent2: #3fb950;
+      --warn: #d29922;
+      --danger: #f85149;
+      --text: #c9d1d9;
+      --text-dim: #8b949e;
+      --sidebar-w: 240px;
+    }
+
+    html { scroll-behavior: smooth; }
+
     body {
+      display: flex;
       min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    /* ── Sidebar ─────────────────────────────────────────────── */
+    #sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: var(--sidebar-w);
+      height: 100vh;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
       display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #1a1a2e;
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      color: #e0e0e0;
+      flex-direction: column;
+      overflow-y: auto;
+      z-index: 100;
     }
 
-    .card {
-      max-width: 680px;
-      width: 90%;
-      background: #16213e;
-      border: 1px solid #0f3460;
-      border-radius: 12px;
-      padding: 2.5rem 2rem;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-      text-align: center;
-    }
-
-    h1 {
-      font-size: 1.1rem;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: #e94560;
-      margin-bottom: 0.4rem;
-    }
-
-    .category {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: #0f3460;
-      background: #0f3460;
-      color: #a0c4ff;
-      display: inline-block;
-      padding: 0.2em 0.8em;
-      border-radius: 999px;
-      margin-bottom: 1.8rem;
-    }
-
-    .fact {
-      font-size: 1.25rem;
-      line-height: 1.7;
-      color: #e0e0e0;
-      min-height: 6rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 2rem;
-      transition: opacity 0.25s ease;
-    }
-
-    .fact.fade { opacity: 0; }
-
-    .counter {
-      font-size: 0.75rem;
-      color: #555;
-      margin-bottom: 1.5rem;
-    }
-
-    button {
-      background: #e94560;
-      color: #fff;
-      border: none;
-      padding: 0.75rem 2.5rem;
-      border-radius: 8px;
+    .sidebar-logo {
+      padding: 1rem 1rem 0.5rem;
       font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.75rem;
+    }
+    .sidebar-logo span { color: var(--text-dim); font-weight: 400; font-size: 0.75rem; display: block; }
+
+    #search {
+      margin: 0.75rem;
+      padding: 0.5rem 0.75rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 0.85rem;
+      outline: none;
+      width: calc(100% - 1.5rem);
+    }
+    #search:focus { border-color: var(--accent); }
+
+    #toc { padding: 0 0.5rem; flex: 1; }
+    #toc a {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.5rem;
+      border-radius: 5px;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: background 0.15s, color 0.15s;
+    }
+    #toc a:hover, #toc a.active { background: rgba(88,166,255,0.1); color: var(--accent); }
+    #toc .toc-icon { font-size: 1rem; width: 1.2em; text-align: center; }
+
+    .sidebar-actions {
+      padding: 0.75rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .sidebar-actions button {
+      width: 100%;
+      padding: 0.45rem 0.75rem;
+      font-size: 0.8rem;
+      border-radius: 5px;
+      border: 1px solid var(--border);
       cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
+      background: var(--bg);
+      color: var(--text);
+      text-align: left;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .sidebar-actions button:hover { background: var(--border); border-color: var(--accent); color: var(--accent); }
+
+    /* ── Main content ────────────────────────────────────────── */
+    #content {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      padding: 2.5rem 3rem;
+      max-width: 860px;
     }
 
-    button:hover { background: #c73652; }
-    button:active { transform: scale(0.97); }
+    #hero { margin-bottom: 2.5rem; }
+    #hero h1 { font-size: 1.8rem; color: #fff; margin-bottom: 0.3rem; }
+    #hero p { color: var(--text-dim); font-size: 0.9rem; }
+    #hero .disclaimer {
+      margin-top: 0.75rem;
+      padding: 0.6rem 0.9rem;
+      background: rgba(242,186,40,0.08);
+      border-left: 3px solid var(--warn);
+      border-radius: 0 4px 4px 0;
+      font-size: 0.82rem;
+      color: var(--warn);
+    }
+
+    /* Sections */
+    .wiki-section {
+      margin-bottom: 3rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2rem;
+    }
+    .wiki-section:last-child { border-bottom: none; }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1.25rem;
+    }
+    .section-header h2 {
+      font-size: 1.3rem;
+      color: #fff;
+    }
+    .section-icon { font-size: 1.3rem; }
+
+    h3 {
+      font-size: 1rem;
+      color: var(--accent);
+      margin: 1.4rem 0 0.5rem;
+      padding-bottom: 0.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    p { margin-bottom: 0.75rem; }
+    p:last-child { margin-bottom: 0; }
+
+    ul, ol {
+      padding-left: 1.4rem;
+      margin-bottom: 0.75rem;
+    }
+    li { margin-bottom: 0.25rem; }
+
+    strong { color: #e6edf3; }
+
+    .warn-box {
+      margin: 0.75rem 0;
+      padding: 0.6rem 0.9rem;
+      background: rgba(248,81,73,0.08);
+      border-left: 3px solid var(--danger);
+      border-radius: 0 4px 4px 0;
+      font-size: 0.85rem;
+      color: #f0a0a0;
+    }
+
+    .tip-box {
+      margin: 0.75rem 0;
+      padding: 0.6rem 0.9rem;
+      background: rgba(63,185,80,0.08);
+      border-left: 3px solid var(--accent2);
+      border-radius: 0 4px 4px 0;
+      font-size: 0.85rem;
+      color: #a0d8b0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin: 0.75rem 0;
+    }
+    th {
+      background: var(--surface);
+      color: var(--accent);
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border);
+      font-weight: 600;
+    }
+    td {
+      padding: 0.45rem 0.75rem;
+      border: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+    /* Search highlight */
+    mark { background: rgba(88,166,255,0.3); color: inherit; border-radius: 2px; }
+
+    /* Downloads section */
+    .dl-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    .dl-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: border-color 0.15s, transform 0.1s;
+      text-align: left;
+    }
+    .dl-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+    .dl-card .dl-icon { font-size: 1.5rem; margin-bottom: 0.4rem; }
+    .dl-card .dl-title { font-size: 0.9rem; color: #fff; font-weight: 600; }
+    .dl-card .dl-sub { font-size: 0.75rem; color: var(--text-dim); }
+    .dl-card-full {
+      grid-column: 1 / -1;
+      background: rgba(88,166,255,0.06);
+      border-color: var(--accent);
+    }
+
+    /* No-results */
+    #no-results { display: none; text-align: center; color: var(--text-dim); padding: 3rem; }
+
+    /* Print ─────────────────────────────────────────────────── */
+    @media print {
+      #sidebar, .sidebar-actions, #hero .disclaimer, .dl-grid { display: none !important; }
+      #content { margin-left: 0; padding: 1rem; max-width: 100%; }
+      .wiki-section { page-break-inside: avoid; }
+      body { background: #fff; color: #111; font-size: 13px; }
+      h2 { color: #111; }
+      h3 { color: #1a5276; border-bottom: 1px solid #ccc; }
+      table, th, td { border-color: #ccc; }
+      th { background: #f0f0f0; color: #1a5276; }
+      .warn-box { border-left-color: #c0392b; color: #c0392b; background: #fff0ee; }
+      .tip-box  { border-left-color: #196f3d; color: #196f3d; background: #f0fff4; }
+      a { color: inherit; text-decoration: none; }
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      :root { --sidebar-w: 0px; }
+      #sidebar { display: none; }
+      #content { padding: 1.5rem 1rem; }
+    }
   </style>
 </head>
 <body>
-<div class="card">
-  <h1>Survival Facts</h1>
-  <span class="category" id="category">Loading…</span>
-  <p class="fact" id="fact"></p>
-  <p class="counter" id="counter"></p>
-  <button onclick="nextFact()">Next Fact</button>
-</div>
+
+<!-- ── Sidebar ───────────────────────────────────────────────── -->
+<aside id="sidebar">
+  <div class="sidebar-logo">
+    Survival Wiki
+    <span>Field Reference Guide</span>
+  </div>
+  <input type="search" id="search" placeholder="Search topics…" autocomplete="off" />
+  <nav id="toc">
+    <a href="#water"><span class="toc-icon">💧</span> Water</a>
+    <a href="#fire"><span class="toc-icon">🔥</span> Fire</a>
+    <a href="#shelter"><span class="toc-icon">🏕️</span> Shelter</a>
+    <a href="#navigation"><span class="toc-icon">🧭</span> Navigation</a>
+    <a href="#food"><span class="toc-icon">🌿</span> Food &amp; Foraging</a>
+    <a href="#firstaid"><span class="toc-icon">🩹</span> First Aid</a>
+    <a href="#signaling"><span class="toc-icon">📡</span> Signaling</a>
+    <a href="#mindset"><span class="toc-icon">🧠</span> Mindset</a>
+    <a href="#downloads"><span class="toc-icon">⬇️</span> Downloads</a>
+  </nav>
+  <div class="sidebar-actions">
+    <button onclick="window.print()">🖨️ Print / Save as PDF</button>
+    <button onclick="downloadFull()">⬇️ Download Full Reference</button>
+  </div>
+</aside>
+
+<!-- ── Main ──────────────────────────────────────────────────── -->
+<main id="content">
+
+  <div id="hero">
+    <h1>Survival Reference Wiki</h1>
+    <p>Comprehensive field reference for wilderness survival — water, fire, shelter, navigation, food, first aid, signaling, and mindset.</p>
+    <div class="disclaimer">
+      ⚠️ This guide is for educational and preparedness reference only. Real emergencies require trained professionals. Seek certified wilderness first aid training before relying on any procedure here.
+    </div>
+  </div>
+
+  <div id="no-results">No sections match your search.</div>
+
+  <!-- ── WATER ─────────────────────────────────────────────── -->
+  <section class="wiki-section" id="water" data-label="Water">
+    <div class="section-header">
+      <span class="section-icon">💧</span>
+      <h2>Water</h2>
+    </div>
+
+    <h3>Daily Requirements</h3>
+    <p>The human body needs approximately <strong>2–3 liters of water per day</strong> at rest in temperate conditions. Heavy exertion, heat, or altitude can double or triple this requirement. Dehydration impairs judgment long before it impairs physical performance.</p>
+    <table>
+      <tr><th>Activity Level</th><th>Estimated Need</th><th>Priority</th></tr>
+      <tr><td>Rest / cool climate</td><td>1.5–2 L/day</td><td>Moderate</td></tr>
+      <tr><td>Light activity</td><td>2–3 L/day</td><td>High</td></tr>
+      <tr><td>Heavy exertion / heat</td><td>4–6 L/day</td><td>Critical</td></tr>
+    </table>
+
+    <h3>Signs of Dehydration</h3>
+    <ul>
+      <li><strong>Mild (1–2%):</strong> thirst, darker urine, slight headache</li>
+      <li><strong>Moderate (3–5%):</strong> fatigue, dizziness, reduced urine output, dry mouth</li>
+      <li><strong>Severe (6%+):</strong> confusion, rapid heartbeat, inability to stand — medical emergency</li>
+    </ul>
+    <div class="tip-box">Urine color is your best field indicator. Pale straw = hydrated. Dark amber = drink immediately. No output for 8+ hours = critical.</div>
+
+    <h3>Finding Water</h3>
+    <ul>
+      <li><strong>Follow terrain downhill</strong> — water collects in valleys, gullies, and canyon floors. Animal trails converging downhill often lead to a source.</li>
+      <li><strong>Dew collection:</strong> Before sunrise, wipe dew from grass or leaves with an absorbent cloth, then wring it into a container. A single morning can yield 500 mL or more.</li>
+      <li><strong>Transpiration bag:</strong> Tie a clear plastic bag around leafy branches in sunlight. Moisture transpired by the plant collects in the corner of the bag.</li>
+      <li><strong>Solar still:</strong> Dig a pit (~1 m wide, 50 cm deep), place container at center, cover with clear plastic weighted at edges and center with a rock. Moisture condenses on the underside and drips into the container. Output is low (200–500 mL/day) — best used with green vegetation placed inside the pit.</li>
+      <li><strong>Rocky crevices:</strong> After rain, water pools in shaded rock depressions and can be extracted with cloth or tubing.</li>
+      <li><strong>Indicators of groundwater:</strong> dense green vegetation, willows, cottonwoods, cattails, or insects (especially mosquitoes and bees) flying in a persistent direction.</li>
+    </ul>
+    <div class="warn-box">Never drink seawater. Never drink urine. The salt content causes your kidneys to use more water than you consume, accelerating dehydration. Cactus fluid (except barrel cactus in small amounts) is highly acidic and will cause vomiting.</div>
+
+    <h3>Purification Methods</h3>
+    <table>
+      <tr><th>Method</th><th>How</th><th>Kills</th><th>Notes</th></tr>
+      <tr><td>Boiling</td><td>Rolling boil 1 min (3 min above 2000 m)</td><td>All pathogens</td><td>Best all-round method; does not remove chemicals</td></tr>
+      <tr><td>Chemical (iodine)</td><td>5–10 drops/L, wait 30 min</td><td>Bacteria, viruses, most protozoa</td><td>Ineffective against Cryptosporidium; not for pregnant women</td></tr>
+      <tr><td>Chemical (bleach)</td><td>2 drops 5% bleach/L clear water; 4 drops if cloudy. Wait 30 min.</td><td>Bacteria, viruses</td><td>Less effective against Giardia/Crypto without long contact time</td></tr>
+      <tr><td>Filtration (pump/straw)</td><td>Per manufacturer</td><td>Bacteria, protozoa</td><td>Most filters do NOT remove viruses — combine with chemical if virus risk is high</td></tr>
+      <tr><td>Improvised filter</td><td>Layer grass → charcoal → sand → gravel in bottle. Filter then boil.</td><td>Particles, some bacteria</td><td>Removes sediment and improves taste; boiling still required</td></tr>
+    </table>
+  </section>
+
+  <!-- ── FIRE ──────────────────────────────────────────────── -->
+  <section class="wiki-section" id="fire" data-label="Fire">
+    <div class="section-header">
+      <span class="section-icon">🔥</span>
+      <h2>Fire</h2>
+    </div>
+
+    <h3>The Fire Triangle</h3>
+    <p>Every fire requires <strong>heat + fuel + oxygen</strong>. Removing any one element extinguishes it. Building a fire is a progression from smallest to largest fuel: tinder → kindling → fuel wood. Never skip steps.</p>
+
+    <h3>Site Preparation</h3>
+    <ul>
+      <li>Choose a spot sheltered from wind but with airflow — avoid dense canopy overhead.</li>
+      <li>Clear a 1-meter radius of debris down to bare earth or rock.</li>
+      <li>In snow or wet ground, build a platform of green logs to insulate the fire from the ground.</li>
+      <li>Have twice as much tinder and kindling ready before striking a single spark.</li>
+    </ul>
+
+    <h3>Tinder, Kindling &amp; Fuel</h3>
+    <table>
+      <tr><th>Stage</th><th>Examples</th><th>Notes</th></tr>
+      <tr><td>Tinder</td><td>Dry grass, birch bark, fatwood shavings, cattail fluff, dried fungi, char cloth, fine bark fibers</td><td>Must ignite from a spark or brief flame. Prepare a palm-sized bundle.</td></tr>
+      <tr><td>Kindling</td><td>Dry sticks pencil-to-finger thickness, split wood, dry pine needles</td><td>Add after tinder is established. Cross-hatch for airflow.</td></tr>
+      <tr><td>Fuel</td><td>Wrist-to-arm thickness dry hardwood, standing dead wood</td><td>Add once kindling is burning steadily. Hardwood burns longer; softwood ignites easier.</td></tr>
+    </table>
+    <div class="tip-box">Birch bark contains oils that ignite even when damp. Fatwood (resin-saturated pine, identified by heavy weight and strong pine smell) is the best natural firestarter. Dead wood still attached to the tree is nearly always drier than wood on the ground.</div>
+
+    <h3>Fire Starting Methods</h3>
+    <ul>
+      <li><strong>Ferrocerium rod:</strong> Strike at a low angle close to the tinder bundle. Works wet. Carry one always.</li>
+      <li><strong>Bow drill:</strong> Requires dry fireboard and spindle (willow, cottonwood, basswood, or cedar work well). Drill produces an ember in the notch; transfer ember to tinder bundle and blow gently. High skill requirement — practice before needing it.</li>
+      <li><strong>Flint and steel:</strong> Strike high-carbon steel against sharp flint, quartz, or chert to shower sparks onto char cloth. Medieval reliable; difficult without char cloth.</li>
+      <li><strong>Magnification:</strong> Convex lens (magnifying glass, glasses lens, water-filled clear bag, ice lens) focused to a pinpoint on dark tinder on a sunny day.</li>
+      <li><strong>Battery + steel wool:</strong> Stretch fine steel wool and touch both terminals of a 9V battery to it. Blows gently. Works even with weak batteries.</li>
+      <li><strong>Matches / lighter:</strong> Always carry waterproofed matches or a quality lighter as primary — improvised methods are backup.</li>
+    </ul>
+
+    <h3>Fire Lay Types</h3>
+    <table>
+      <tr><th>Type</th><th>Construction</th><th>Best For</th></tr>
+      <tr><td>Tepee</td><td>Lean kindling around tinder in a cone, leaving a door facing the wind</td><td>Quick starts; poor for cooking</td></tr>
+      <tr><td>Log cabin</td><td>Stack fuel in alternating square layers around tinder/kindling center</td><td>Long burn, coals for cooking</td></tr>
+      <tr><td>Star</td><td>5 logs radiating from center like spokes; push inward as they burn</td><td>Efficient fuel use; minimal splitting</td></tr>
+      <tr><td>Trench</td><td>Narrow trench aligned with wind; fire burns along trench</td><td>Windy conditions; concentrated heat for cooking</td></tr>
+      <tr><td>Reflector</td><td>Stack green logs or rocks in a wall behind fire</td><td>Directs heat toward shelter; dramatically increases warmth</td></tr>
+    </table>
+  </section>
+
+  <!-- ── SHELTER ────────────────────────────────────────────── -->
+  <section class="wiki-section" id="shelter" data-label="Shelter">
+    <div class="section-header">
+      <span class="section-icon">🏕️</span>
+      <h2>Shelter</h2>
+    </div>
+
+    <h3>Priority and Hypothermia Risk</h3>
+    <p>Exposure kills faster than thirst or hunger. <strong>You can die of hypothermia at 50°F (10°C)</strong> if wet and wind-exposed. Shelter is your first priority unless you are already dehydrated or injured.</p>
+    <div class="warn-box">The ground conducts heat away from your body 25× faster than still air. Always insulate yourself from the ground — a layer of dry leaves, branches, or a pack is mandatory before worrying about overhead cover.</div>
+
+    <h3>Site Selection</h3>
+    <ul>
+      <li>Choose <strong>natural windbreaks</strong> — dense conifers, rock faces, hillsides. Wind doubles heat loss.</li>
+      <li>Avoid ridgelines, hilltops, valley bottoms (cold air pools), and dry riverbeds (flash floods).</li>
+      <li>Look for natural overhead cover: rock overhangs, fallen trees, dense conifers.</li>
+      <li>Proximity to water and fuel is helpful but not at the cost of a safe, sheltered location.</li>
+      <li>Check for widow-makers (dead branches overhead) and ant/wasp nests before settling.</li>
+    </ul>
+
+    <h3>Lean-to</h3>
+    <p>Quickest structure. Lash a horizontal ridgepole between two trees at shoulder height. Lean branches densely against it at 45°. Layer bark, leaves, and debris from bottom to top like roof shingles (minimum 15 cm thick). Build a reflector fire in front for radiant heat. Open-fronted; poor in heavy rain or cold without a fire.</p>
+
+    <h3>Debris Hut</h3>
+    <p>Best no-fire shelter for cold weather. Lay a ridgepole from the ground to a tree fork or stump, elevated ~1 m at the fork. Lean sticks along both sides (ribs). Cover entirely with debris 60–90 cm thick — leaves, pine needles, bark, moss. Stuff the interior with dry leaves for bedding. Entry should be just large enough to squeeze into and be blocked with a leaf bundle.</p>
+    <div class="tip-box">A properly built debris hut can stay 15–20°C warmer than outside air with body heat alone. If you can't cover it with your arms spread wide, it needs more debris.</div>
+
+    <h3>Snow Shelters</h3>
+    <ul>
+      <li><strong>Snow trench:</strong> Dig a body-width trench, cover with branches/pack/skis topped with snow blocks. Quick and effective in open terrain.</li>
+      <li><strong>Quinzhee:</strong> Pile snow into a 2 m mound, let it sinter 2 hours, then hollow it out to ~15 cm walls (insert sticks as thickness guides). Poke ventilation hole with a ski pole before sleeping.</li>
+      <li><strong>Snow cave:</strong> Excavate into a stable drift. Sleeping platform should be raised above the entrance to trap warm air. Ventilation is critical — mark entrance with a pole in case of burial.</li>
+    </ul>
+
+    <h3>Emergency Warmth</h3>
+    <ul>
+      <li>Layer clothing to trap air. Wet clothing loses 90% of its insulation — change immediately if possible.</li>
+      <li>Cover the head — up to 40% of body heat loss occurs there.</li>
+      <li>Stuff dry leaves or grass inside clothing as improvised insulation.</li>
+      <li>Curl into a fetal position to minimize exposed surface area.</li>
+      <li>Two people sharing a sleeping bag doubles survival time in extreme cold.</li>
+    </ul>
+  </section>
+
+  <!-- ── NAVIGATION ─────────────────────────────────────────── -->
+  <section class="wiki-section" id="navigation" data-label="Navigation">
+    <div class="section-header">
+      <span class="section-icon">🧭</span>
+      <h2>Navigation</h2>
+    </div>
+
+    <h3>STOP First</h3>
+    <p><strong>Stop, Think, Observe, Plan.</strong> Moving while lost increases your search area exponentially and burns energy. Stop as soon as you suspect you're lost. Most rescues happen within 3 km of the last known point.</p>
+
+    <h3>Solar Navigation</h3>
+    <ul>
+      <li><strong>Sun arc:</strong> In the northern hemisphere, the sun rises roughly east, tracks south across the sky, and sets roughly west. Reverse in the southern hemisphere.</li>
+      <li><strong>Shadow-stick method:</strong> Push a stick into flat ground. Mark the tip of the shadow. Wait 15 minutes. Mark again. A line from first to second mark runs roughly west to east. Stand with the first mark at your left foot and second at your right — you face north (northern hemisphere).</li>
+      <li><strong>Watch compass (analog):</strong> Hold the watch flat. Point the hour hand at the sun. The bisecting angle between the hour hand and 12 o'clock is south (northern hemisphere). Adjust for daylight saving: use 1 o'clock instead of 12.</li>
+    </ul>
+
+    <h3>Stellar Navigation</h3>
+    <ul>
+      <li><strong>Polaris (Northern Hemisphere):</strong> Find the Big Dipper's outer bowl edge. Extend a line 5× that distance — it points to Polaris (North Star). Polaris sits within ~1° of true north.</li>
+      <li><strong>Southern Cross (Southern Hemisphere):</strong> Extend a line from the long axis of the Southern Cross 4.5× its length to find south. The two bright pointer stars outside the cross confirm orientation.</li>
+    </ul>
+
+    <h3>Terrain Reading</h3>
+    <ul>
+      <li>Water flows downhill to valleys and eventually to civilization. Following a stream downstream is the most reliable wilderness navigation method.</li>
+      <li>Ridgelines travel farther and faster than valleys but offer better visibility and signaling opportunities.</li>
+      <li>Drainage patterns (where streams join) help locate your position on a map.</li>
+      <li>Moss, lichen, and bark discoloration from moisture are unreliable compass indicators — use them as hints only.</li>
+    </ul>
+
+    <h3>Improvised Compass</h3>
+    <p>Magnetize a needle by stroking it 50+ times in one direction against silk, hair, or a magnet. Float it on a leaf in still water or hang it from a thread. It will align north–south; test against the shadow-stick method to determine which end points north.</p>
+
+    <h3>Leaving a Trail</h3>
+    <ul>
+      <li>Cairns (stacked rocks) are universally understood trail markers.</li>
+      <li>Break branches at waist height pointing your direction of travel.</li>
+      <li>Scratch arrows into soft soil or bark at decision points.</li>
+      <li>Leave bright clothing scraps tied to trees at regular intervals.</li>
+    </ul>
+  </section>
+
+  <!-- ── FOOD ───────────────────────────────────────────────── -->
+  <section class="wiki-section" id="food" data-label="Food Foraging">
+    <div class="section-header">
+      <span class="section-icon">🌿</span>
+      <h2>Food &amp; Foraging</h2>
+    </div>
+
+    <h3>Priorities</h3>
+    <p>The body can survive <strong>3 weeks without food</strong> — food is rarely the first priority unless the survival situation extends beyond a few days. Pursuing food at the expense of hydration or shelter is a fatal error. A resting adult burns roughly 1,500–2,000 calories/day; reduce activity to conserve this budget.</p>
+    <div class="warn-box">Do not eat if you have no water — digestion consumes water. Never eat unknown plants or fungi to "try them." Poisoning in a survival situation is catastrophically worse than going hungry.</div>
+
+    <h3>Universal Edibility Test</h3>
+    <p>Test <strong>one plant part at a time</strong> (leaf, root, seed) over an extended period. If any step causes reaction, discard that plant entirely.</p>
+    <ol>
+      <li>Fast 8 hours before testing.</li>
+      <li>Crush a small piece; hold against inner wrist — wait 15 minutes. Check for redness, burning, or itching.</li>
+      <li>Hold against outer lip 3 minutes.</li>
+      <li>Hold against tongue tip 15 minutes.</li>
+      <li>Chew a small amount thoroughly — hold in mouth 15 minutes without swallowing.</li>
+      <li>Swallow a small amount. Wait 8 hours. If no nausea, cramps, or numbness, eat a slightly larger amount and wait another 8 hours.</li>
+    </ol>
+    <div class="warn-box">Even passing the full test is not a guarantee of safety — some toxins accumulate or only affect certain individuals. The test does not apply to mushrooms; do not eat wild fungi without expert identification.</div>
+
+    <h3>General Foraging Rules</h3>
+    <table>
+      <tr><th>Avoid</th><th>Safer Indicators</th></tr>
+      <tr><td>White or yellow berries</td><td>Aggregate berries (raspberries, blackberries) — generally safe worldwide</td></tr>
+      <tr><td>Bitter or burning taste</td><td>Cooking neutralizes many toxins — boil plants, discard water</td></tr>
+      <tr><td>Milky or discolored sap</td><td>Cattail (Typha) — entire plant is edible; one of the most reliable wild foods</td></tr>
+      <tr><td>Plants with umbrella-shaped flower clusters (many are deadly)</td><td>Pine needles — edible, high in Vitamin C; boil for tea</td></tr>
+      <tr><td>Fine-haired caterpillars</td><td>Dandelion — entire plant edible raw or cooked; worldwide distribution</td></tr>
+      <tr><td>Brightly colored insects</td><td>Grasshoppers / crickets — cook before eating; remove legs and wings</td></tr>
+    </table>
+
+    <h3>Insects</h3>
+    <p>Insects are the most calorie-dense and abundant wild food source. They require minimal energy to collect and are high in protein and fat. <strong>Always cook insects</strong> to kill parasites and bacteria. Remove legs, wings, and heads (head may contain venom sacs). Beetles, ants, termites, and grasshoppers are the most globally available.</p>
+
+    <h3>Trapping Basics</h3>
+    <ul>
+      <li><strong>Snares:</strong> A wire loop (25–30 cm diameter for rabbit) suspended at neck height (a fist's width above the trail). Set on established game trails — look for tracks, droppings, or worn paths. Set 5–10 traps simultaneously to improve odds.</li>
+      <li><strong>Deadfall (Paiute or figure-4):</strong> A heavy rock or log triggered to fall on prey. Requires careful carving and patience. Best for small mammals.</li>
+      <li>Check traps every few hours. Rotting bait attracts fewer animals and causes meat to spoil.</li>
+    </ul>
+
+    <h3>Fishing</h3>
+    <ul>
+      <li>Improvise hooks from pins, thorns, bent wire, or carved bone.</li>
+      <li>Any invertebrate (worms, insects, grubs) works as bait.</li>
+      <li>Fish are most active at dawn and dusk. Shallow edges and below fallen trees are prime locations.</li>
+      <li>A weir (stone funnel directing fish into a pocket) or a basket trap can be passive and highly effective in streams.</li>
+    </ul>
+  </section>
+
+  <!-- ── FIRST AID ───────────────────────────────────────────── -->
+  <section class="wiki-section" id="firstaid" data-label="First Aid">
+    <div class="section-header">
+      <span class="section-icon">🩹</span>
+      <h2>First Aid</h2>
+    </div>
+
+    <div class="warn-box">This section is a quick reference. It does not replace Wilderness First Aid (WFA) or Wilderness First Responder (WFR) training. Seek professional certification.</div>
+
+    <h3>Bleeding Control</h3>
+    <ul>
+      <li>Apply firm, direct pressure with the cleanest material available. Hold for <strong>10 full minutes without lifting</strong> to check.</li>
+      <li>If blood soaks through, add more material on top — do not remove.</li>
+      <li><strong>Tourniquet:</strong> Apply 5–8 cm above wound on a limb only (not the neck or torso). Tighten until bleeding stops. Note the time applied. A properly applied tourniquet is painful — that indicates correct tension. Do not remove in the field.</li>
+      <li>Wound packing: for deep wounds that cannot be controlled with surface pressure, pack cloth firmly into the wound cavity and apply sustained pressure.</li>
+    </ul>
+
+    <h3>Shock</h3>
+    <p>Shock is inadequate blood/oxygen delivery to organs. It can follow bleeding, severe burns, allergic reaction, or infection. <strong>Signs:</strong> pale/cool/clammy skin; rapid, weak pulse; rapid shallow breathing; confusion or anxiety; nausea.</p>
+    <ul>
+      <li>Lay the patient flat; elevate legs 15–20 cm (if no spinal injury suspected).</li>
+      <li>Keep them warm — a shocky patient loses heat rapidly.</li>
+      <li>Do not give food or water.</li>
+      <li>Treat the cause (control bleeding, stabilize fracture).</li>
+      <li>Seek evacuation immediately — shock is life-threatening.</li>
+    </ul>
+
+    <h3>Fractures</h3>
+    <ul>
+      <li>Stabilize the fracture by splinting in the position found — two rigid sticks padded with clothing either side of the limb, secured with strips of cloth above and below the break (not at the break).</li>
+      <li>Check pulse, sensation, and movement (PSM) distal to the injury before and after splinting.</li>
+      <li>Open fractures (bone through skin) require careful wound covering and expedited evacuation. Do not attempt to push bone back.</li>
+      <li>Spinal injury: do not move the patient unless they face immediate danger. If movement is unavoidable, maintain neutral spine alignment.</li>
+    </ul>
+
+    <h3>Hypothermia</h3>
+    <table>
+      <tr><th>Stage</th><th>Core Temp</th><th>Signs</th><th>Treatment</th></tr>
+      <tr><td>Mild</td><td>32–35°C</td><td>Shivering, impaired coordination, slurred speech</td><td>Remove wet clothing, insulate, provide warm fluids if alert</td></tr>
+      <tr><td>Moderate</td><td>28–32°C</td><td>Shivering stops, extreme drowsiness, confusion</td><td>Gentle handling, insulate, chemical heat packs to armpits/groin, no warm fluids</td></tr>
+      <tr><td>Severe</td><td>&lt;28°C</td><td>Unconscious, barely palpable pulse, rigid muscles</td><td>Handle extremely gently (risk of cardiac arrest), insulate, immediate evacuation</td></tr>
+    </table>
+    <div class="warn-box">Warm the core first — not the extremities. Warming limbs first drives cold blood to the heart and can cause cardiac arrest (afterdrop).</div>
+
+    <h3>Heat Illness</h3>
+    <ul>
+      <li><strong>Heat cramps:</strong> painful muscle spasms during exercise. Rest in shade, drink electrolyte-containing water, gentle stretching.</li>
+      <li><strong>Heat exhaustion:</strong> heavy sweating, weakness, cool pale clammy skin, nausea, fainting. Move to shade, cool with wet cloths, elevate legs, encourage slow drinking.</li>
+      <li><strong>Heat stroke:</strong> high body temp (40°C+), hot dry skin, confusion, unconsciousness. Medical emergency. Cool by any means — immersion, wet cloth with fanning, ice packs to neck/armpits/groin. Evacuate immediately.</li>
+    </ul>
+
+    <h3>Bites &amp; Stings</h3>
+    <ul>
+      <li><strong>Snake bite:</strong> Remain calm. Immobilize and keep bitten limb at or below heart level. Remove rings/tight items near the bite. Do not cut, suck, apply ice, or tourniquet. Evacuate immediately. Note snake appearance if safe to do so.</li>
+      <li><strong>Anaphylaxis (severe allergic reaction):</strong> Epinephrine auto-injector (EpiPen) if available, then evacuate. Signs: hives, swollen throat, difficulty breathing, rapid drop in blood pressure.</li>
+      <li><strong>Tick removal:</strong> Grasp as close to skin as possible with fine-point tweezers. Pull straight upward with steady pressure. Do not twist. Clean with antiseptic.</li>
+    </ul>
+
+    <h3>Burns</h3>
+    <ul>
+      <li>Cool the burn with running water for <strong>20 minutes</strong>. Do not use ice, butter, or toothpaste.</li>
+      <li>Cover with a clean, non-fluffy dressing. Do not pop blisters.</li>
+      <li>Burns covering &gt;1% of body area (roughly the size of the patient's palm), or any burn to face/hands/genitals/joints, requires evacuation.</li>
+    </ul>
+  </section>
+
+  <!-- ── SIGNALING ──────────────────────────────────────────── -->
+  <section class="wiki-section" id="signaling" data-label="Signaling">
+    <div class="section-header">
+      <span class="section-icon">📡</span>
+      <h2>Signaling</h2>
+    </div>
+
+    <h3>The Universal Distress Signal</h3>
+    <p><strong>Three of anything</strong> — three whistle blasts, three shots, three fires in a triangle (30 m apart), three flashes of light. Pause, then repeat. This is universally recognized across cultures and aviation.</p>
+
+    <h3>Ground-to-Air Signals</h3>
+    <p>Construct symbols at least <strong>10 meters long</strong> from rocks, logs, or trampled vegetation in a clearing, on snow, or on a beach. Make them as high-contrast as possible.</p>
+    <table>
+      <tr><th>Symbol</th><th>Meaning</th></tr>
+      <tr><td>X</td><td>Need medical assistance</td></tr>
+      <tr><td>V</td><td>Need help</td></tr>
+      <tr><td>→ (arrow)</td><td>Traveling in this direction</td></tr>
+      <tr><td>Y</td><td>Yes</td></tr>
+      <tr><td>N</td><td>No</td></tr>
+      <tr><td>LL</td><td>All is well</td></tr>
+    </table>
+
+    <h3>Signal Fire</h3>
+    <ul>
+      <li>Build in a clearing visible from the air. Have dry tinder ready — a signal fire you can't light quickly is useless.</li>
+      <li><strong>Daytime:</strong> Add green leaves, wet moss, or rubber to create thick smoke. Smoke is visible from aircraft many kilometers away.</li>
+      <li><strong>Nighttime:</strong> A bright flame with minimal smoke is most visible. Dry hardwood or petroleum-based materials.</li>
+      <li>Three fires in a triangle is the strongest signal — maintain fuel for all three.</li>
+    </ul>
+
+    <h3>Mirror Signaling</h3>
+    <p>A signal mirror can be seen from <strong>over 15 km</strong> by aircraft on a sunny day. Aim: hold the mirror near your eye, extend your other hand in a V sign, aim the reflected sunspot through the V at the target aircraft. Flash repeatedly — even random reflection in a search area alerts rescuers.</p>
+    <div class="tip-box">Any reflective surface works: phone screen, foil, CD, watch face, polished metal. You don't need a purpose-built mirror.</div>
+
+    <h3>Whistle</h3>
+    <p>A plastic whistle carries far further than a human voice and requires a fraction of the energy. Blow three blasts, pause, repeat. A whistle is audible through dense forest where shouting is not. Always carry one.</p>
+
+    <h3>Radio and Electronic Devices</h3>
+    <ul>
+      <li><strong>PLB (Personal Locator Beacon):</strong> Single-use satellite distress alert — triggers a coordinated search and rescue response. No subscription required in most regions. The single most effective emergency device.</li>
+      <li><strong>Satellite communicator (SPOT, Garmin inReach):</strong> Two-way messaging + tracking. Subscription required.</li>
+      <li><strong>Cell phone:</strong> Try 911 / 112 even with no signal — emergency calls may connect on any available carrier. Move to high ground for better reception. Preserve battery by enabling airplane mode except when trying to signal.</li>
+    </ul>
+  </section>
+
+  <!-- ── MINDSET ─────────────────────────────────────────────── -->
+  <section class="wiki-section" id="mindset" data-label="Mindset">
+    <div class="section-header">
+      <span class="section-icon">🧠</span>
+      <h2>Mindset</h2>
+    </div>
+
+    <h3>The Rule of Threes</h3>
+    <p>This hierarchy defines your survival decision-making order:</p>
+    <table>
+      <tr><th>Timeframe</th><th>Threat</th></tr>
+      <tr><td>3 minutes</td><td>Without air (airway obstruction, drowning)</td></tr>
+      <tr><td>3 hours</td><td>In harsh weather without adequate shelter (exposure)</td></tr>
+      <tr><td>3 days</td><td>Without water</td></tr>
+      <tr><td>3 weeks</td><td>Without food</td></tr>
+    </table>
+    <p>Always address the most immediate threat first. People die preparing fire when they should be building shelter, and search for food when they are already dangerously dehydrated.</p>
+
+    <h3>STOP Protocol</h3>
+    <p>The single most important procedure when lost or in danger:</p>
+    <ul>
+      <li><strong>Stop:</strong> Halt all movement immediately. Moving while uncertain dramatically expands your lost radius.</li>
+      <li><strong>Think:</strong> What do I know? What was my last known position? What resources do I have? What are my immediate threats?</li>
+      <li><strong>Observe:</strong> Read your environment. What's the weather doing? Where is water? What materials are available? Which direction is downhill?</li>
+      <li><strong>Plan:</strong> Make a specific, simple plan with clear priorities. Announce it to companions. Revise it as conditions change.</li>
+    </ul>
+
+    <h3>Psychological Factors in Survival</h3>
+    <p>Survival research — including studies of plane crash, shipwreck, and wilderness emergency survivors — consistently shows that the primary determinant of outcome is not physical fitness or technical skill: it is <strong>the will to live and the ability to think clearly under stress.</strong></p>
+    <ul>
+      <li><strong>Fear is normal.</strong> Acknowledge it, then act. Paralysis is the danger, not the fear.</li>
+      <li><strong>Small wins matter.</strong> Build a fire, collect water, construct a shelter — each task builds confidence and momentum.</li>
+      <li><strong>Give yourself a reason to survive.</strong> Survivors frequently report fixating on a specific person, goal, or obligation. This is not weakness — it is a cognitive tool.</li>
+      <li><strong>Avoid catastrophizing.</strong> Break the situation into the next manageable task. "I need to find water before dark" is actionable. "I'm going to die out here" is not.</li>
+    </ul>
+
+    <h3>Decision Making Under Stress</h3>
+    <ul>
+      <li>Stress hormones impair complex reasoning and amplify risk-taking. Slow your breathing (4 sec inhale, 4 hold, 4 exhale) to reduce cortisol and restore prefrontal function.</li>
+      <li>When considering an action, ask: "What is the worst case if this goes wrong, and can I recover from it?" Avoid irreversible actions under uncertainty.</li>
+      <li>Two people make better decisions than one — assign clear roles and decisions points.</li>
+      <li>Fatigue severely impairs judgment. Prioritize sleep when the immediate threat is managed.</li>
+    </ul>
+
+    <h3>Training and Preparation</h3>
+    <ul>
+      <li>Take a certified <strong>Wilderness First Aid (WFA)</strong> or <strong>Wilderness First Responder (WFR)</strong> course.</li>
+      <li>Practice fire starting and shelter building before you need them — motor skills degrade under stress.</li>
+      <li>Always carry a basic kit: PLB or satellite communicator, fire starting, water purification, first aid, whistle, knife, map + compass.</li>
+      <li>File a detailed trip plan with a trusted contact and establish a check-in schedule before every trip into the backcountry.</li>
+    </ul>
+  </section>
+
+  <!-- ── DOWNLOADS ──────────────────────────────────────────── -->
+  <section class="wiki-section" id="downloads" data-label="Downloads">
+    <div class="section-header">
+      <span class="section-icon">⬇️</span>
+      <h2>Downloads</h2>
+    </div>
+    <p>Save any section as a standalone offline reference. Files are self-contained HTML — open them in any browser with no internet connection required.</p>
+    <div class="dl-grid">
+      <div class="dl-card dl-card-full" onclick="downloadFull()">
+        <div class="dl-icon">📚</div>
+        <div class="dl-title">Full Reference Guide</div>
+        <div class="dl-sub">All 8 sections — complete offline wiki</div>
+      </div>
+      <div class="dl-card" onclick="downloadSection('water','💧 Water','water')">
+        <div class="dl-icon">💧</div>
+        <div class="dl-title">Water</div>
+        <div class="dl-sub">Finding, purifying, requirements</div>
+      </div>
+      <div class="dl-card" onclick="downloadSection('fire','🔥 Fire','fire')">
+        <div class="dl-icon">🔥</div>
+        <div class="dl-title">Fire</div>
+        <div class="dl-sub">Starting, fuel, lay types</div>
+      </div>
+      <div class="dl-card" onclick="downloadSection('shelter','🏕️ Shelter','shelter')">
+        <div class="dl-icon">🏕️</div>
+        <div class="dl-title">Shelter</div>
+        <div class="dl-sub">Site selection, builds, warmth</div>
+      </div>
+      <div class="dl-card" onclick="downloadSection('navigation','🧭 Navigation','navigation')">
+        <div class="dl-icon">🧭</div>
+        <div class="dl-title">Navigation</div>
+        <div class="dl-sub">Solar, stellar, terrain</div>
+      </div>
+      <div class="dl-card" onclick="downloadSection('food','🌿 Food &amp; Foraging','food')">
+        <div class="dl-icon">🌿</div>
+        <div class="dl-title">Food &amp; Foraging</div>
+        <div class="dl-sub">Edibility, trapping, insects</div>
+      </div>
+      <div class="dl-card" onclick="downloadSection('firstaid','🩹 First Aid','firstaid')">
+        <div class="dl-icon">🩹</div>
+        <div class="dl-title">First Aid</div>
+        <div class="dl-sub">Bleeding, fractures, exposure</div>
+      </div>
+      <div class="dl-card" onclick="downloadSection('signaling','📡 Signaling','signaling')">
+        <div class="dl-icon">📡</div>
+        <div class="dl-title">Signaling</div>
+        <div class="dl-sub">Ground-to-air, mirrors, fire</div>
+      </div>
+      <div class="dl-card" onclick="downloadSection('mindset','🧠 Mindset','mindset')">
+        <div class="dl-icon">🧠</div>
+        <div class="dl-title">Mindset</div>
+        <div class="dl-sub">STOP, Rule of Threes, psychology</div>
+      </div>
+    </div>
+  </section>
+
+</main>
 
 <script>
-const facts = [
-  { category: "Water", text: "A human can survive roughly 3 days without water, but only 3 weeks without food. Hydration is always the first priority." },
-  { category: "Water", text: "Boiling water for at least 1 minute kills virtually all pathogens. At altitudes above 6,500 ft, boil for 3 minutes." },
-  { category: "Water", text: "Never drink seawater — it contains about 3.5% salt, which forces your kidneys to use more water to flush the salt than you drink." },
-  { category: "Water", text: "You can collect dew by wiping grass with an absorbent cloth before sunrise, then wringing the cloth into a container." },
-  { category: "Water", text: "Cactus water is a myth — the liquid inside most cacti is highly acidic and will cause vomiting, making dehydration worse." },
-  { category: "Fire", text: "The fire triangle: fuel, oxygen, heat. Remove any one element and the fire goes out. Build a notch in your fireboard directly beneath the spindle hole so char falls into a tinder bundle." },
-  { category: "Fire", text: "Birch bark and fatwood (resin-saturated pine) ignite even when damp — always collect them first when building an emergency fire kit." },
-  { category: "Fire", text: "A fire reflector made from logs or rocks behind your fire can double the heat directed toward your shelter." },
-  { category: "Fire", text: "Steel wool and a 9-volt battery will start a fire — touch both terminals to the fine wool and blow gently." },
-  { category: "Shelter", text: "Hypothermia can kill at temperatures well above freezing. A wet, 50°F (10°C) day with wind is more dangerous than a calm, dry 20°F (-7°C) night." },
-  { category: "Shelter", text: "The ground steals body heat 25× faster than still air. Always insulate yourself from the ground before worrying about overhead cover." },
-  { category: "Shelter", text: "A debris hut (a mound of dry leaves and branches piled over a frame) can insulate a person without fire in sub-freezing temperatures." },
-  { category: "Shelter", text: "In a lightning storm, avoid lone tall trees, hilltops, and open water. Crouch low on the balls of your feet in a low-lying area." },
-  { category: "Navigation", text: "The sun rises roughly in the east and sets roughly in the west. At noon in the northern hemisphere, it sits due south; in the southern hemisphere, due north." },
-  { category: "Navigation", text: "A watch can serve as a compass: point the hour hand toward the sun; the halfway point between the hour hand and 12 o'clock is south (northern hemisphere)." },
-  { category: "Navigation", text: "Moss does not reliably grow only on the north side of trees — use it as a hint, not a compass. Flowing water is a better guide; follow it downhill to civilization." },
-  { category: "Navigation", text: "If lost, remember S.T.O.P.: Stop, Think, Observe, Plan. Most wilderness fatalities happen when people panic and keep moving." },
-  { category: "Food", text: "Universal Edibility Test (simplified): separate plant parts, test ONE part at a time. Rub juice on inner wrist — wait 15 min. If no reaction, touch to lip 3 min, then tongue tip 15 min, then chew without swallowing 15 min, then swallow a tiny amount and wait 8 hours. Stop immediately at any burning, numbness, nausea, or rash. Even passing the test does not guarantee safety." },
-  { category: "Food", text: "Insects are the most calorie-efficient wild food. Avoid brightly colored ones, those with a pungent smell, and caterpillars with fine hairs. Cooking kills most parasites." },
-  { category: "Food", text: "Eating without water accelerates dehydration — your body needs water to digest protein. In a true water emergency, skip food until you have a water source." },
-  { category: "Food", text: "White berries are almost always toxic. Red berries are 50/50. Blue and black berries are generally safer — but never rely on color alone." },
-  { category: "First Aid", text: "For severe bleeding: apply firm, direct pressure for at least 10 minutes without lifting the dressing to check. A tourniquet on a limb should be applied 2–3 inches above the wound." },
-  { category: "First Aid", text: "Signs of shock: pale, cool, clammy skin; rapid weak pulse; rapid breathing; confusion. Lay the person flat, elevate legs 12 inches (if no spinal injury), and keep them warm." },
-  { category: "First Aid", text: "Hypothermia treatment: remove wet clothing, insulate from the ground, add dry insulation, and warm the core first — not the extremities." },
-  { category: "First Aid", text: "Snake bite: stay calm, immobilize the bitten limb at or below heart level, and get to medical care. Do NOT cut and suck, apply a tourniquet, or apply ice." },
-  { category: "Signaling", text: "The international distress signal is three of anything: three whistle blasts, three fires in a triangle, three gunshots. Repeat at intervals." },
-  { category: "Signaling", text: "A signal mirror can be seen by aircraft from 10+ miles away. In a pinch, any shiny surface — phone screen, foil, CD — will work." },
-  { category: "Signaling", text: "When building a signal fire, add green leaves or wet moss to create white smoke during the day. At night, a bright flame is more visible." },
-  { category: "Mindset", text: "Survival research consistently shows that mental toughness and the will to live are more predictive of survival than technical skills or physical fitness." },
-  { category: "Mindset", text: "The Rule of Threes: 3 minutes without air, 3 hours in harsh weather without shelter, 3 days without water, 3 weeks without food. This hierarchy should drive every survival decision." },
-];
+// ── Search ──────────────────────────────────────────────────────
+const searchInput = document.getElementById('search');
+const sections = document.querySelectorAll('.wiki-section');
+const noResults = document.getElementById('no-results');
 
-let order = shuffle([...Array(facts.length).keys()]);
-let idx = 0;
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim().toLowerCase();
+  let visible = 0;
+  sections.forEach(sec => {
+    if (!q) {
+      sec.style.display = '';
+      removeHighlights(sec);
+      visible++;
+      return;
+    }
+    const text = sec.textContent.toLowerCase();
+    if (text.includes(q)) {
+      sec.style.display = '';
+      highlightText(sec, q);
+      visible++;
+    } else {
+      sec.style.display = 'none';
+    }
+  });
+  noResults.style.display = visible === 0 ? 'block' : 'none';
+});
 
-function shuffle(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
+function highlightText(node, q) {
+  removeHighlights(node);
+  const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+  const matches = [];
+  while (walker.nextNode()) {
+    const n = walker.currentNode;
+    if (n.nodeValue.toLowerCase().includes(q)) matches.push(n);
   }
-  return arr;
+  matches.forEach(n => {
+    const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    const frag = document.createDocumentFragment();
+    n.nodeValue.split(re).forEach(part => {
+      if (part.toLowerCase() === q) {
+        const mark = document.createElement('mark');
+        mark.textContent = part;
+        frag.appendChild(mark);
+      } else {
+        frag.appendChild(document.createTextNode(part));
+      }
+    });
+    n.parentNode.replaceChild(frag, n);
+  });
 }
 
-function showFact(i) {
-  const f = facts[order[i]];
-  document.getElementById('category').textContent = f.category;
-  document.getElementById('fact').textContent = f.text;
-  document.getElementById('counter').textContent = `${i + 1} / ${facts.length}`;
+function removeHighlights(node) {
+  node.querySelectorAll('mark').forEach(m => {
+    m.parentNode.replaceChild(document.createTextNode(m.textContent), m);
+  });
 }
 
-function nextFact() {
-  const el = document.getElementById('fact');
-  el.classList.add('fade');
-  setTimeout(() => {
-    idx = (idx + 1) % facts.length;
-    if (idx === 0) order = shuffle(order);
-    showFact(idx);
-    el.classList.remove('fade');
-  }, 250);
+// ── Active TOC link ─────────────────────────────────────────────
+const tocLinks = document.querySelectorAll('#toc a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      tocLinks.forEach(a => a.classList.remove('active'));
+      const link = document.querySelector(`#toc a[href="#${e.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -60% 0px' });
+sections.forEach(s => observer.observe(s));
+
+// ── Download helpers ────────────────────────────────────────────
+const STYLES = `
+  body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;max-width:800px;margin:2rem auto;padding:0 1.5rem;line-height:1.65;color:#1c1c1e;font-size:15px}
+  h1{font-size:1.6rem;color:#111;margin-bottom:0.25rem}
+  .meta{font-size:0.8rem;color:#888;margin-bottom:2rem;padding-bottom:1rem;border-bottom:2px solid #eee}
+  h2{font-size:1.2rem;color:#1a5276;margin:1.8rem 0 0.5rem;padding-bottom:0.3rem;border-bottom:1px solid #ddd}
+  h3{font-size:0.95rem;color:#2e86c1;margin:1.2rem 0 0.4rem;padding-bottom:0.2rem;border-bottom:1px solid #eee}
+  p{margin-bottom:0.7rem}
+  ul,ol{padding-left:1.4rem;margin-bottom:0.7rem}
+  li{margin-bottom:0.2rem}
+  table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:0.75rem 0}
+  th{background:#eaf0fb;color:#1a5276;text-align:left;padding:0.45rem 0.7rem;border:1px solid #ccc;font-weight:600}
+  td{padding:0.4rem 0.7rem;border:1px solid #ccc;vertical-align:top}
+  tr:nth-child(even) td{background:#f9f9f9}
+  .warn{border-left:3px solid #c0392b;background:#fff0ee;color:#c0392b;padding:0.5rem 0.8rem;margin:0.7rem 0;font-size:0.85rem;border-radius:0 4px 4px 0}
+  .tip{border-left:3px solid #196f3d;background:#f0fff4;color:#196f3d;padding:0.5rem 0.8rem;margin:0.7rem 0;font-size:0.85rem;border-radius:0 4px 4px 0}
+  @media print{body{margin:0;padding:1rem}h2{page-break-before:auto}}
+`;
+
+function buildDoc(title, bodyHTML) {
+  return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>${title} — Survival Reference</title><style>${STYLES}</style></head><body><h1>${title}</h1><p class="meta">Survival Reference Wiki — Downloaded ${new Date().toLocaleDateString()} — For educational use only. Not a substitute for professional training.</p>${bodyHTML}</body></html>`;
 }
 
-showFact(0);
+function sectionHTML(id) {
+  const el = document.getElementById(id);
+  if (!el) return '';
+  const clone = el.cloneNode(true);
+  clone.querySelectorAll('mark').forEach(m => {
+    m.parentNode.replaceChild(document.createTextNode(m.textContent), m);
+  });
+  // convert warn-box / tip-box classes for standalone styling
+  clone.querySelectorAll('.warn-box').forEach(b => { b.className = 'warn'; });
+  clone.querySelectorAll('.tip-box').forEach(b => { b.className = 'tip'; });
+  // strip section header (we'll use h1), keep inner content
+  clone.querySelector('.section-header')?.remove();
+  return clone.innerHTML;
+}
+
+function downloadSection(id, title, filename) {
+  const html = buildDoc(title, sectionHTML(id));
+  trigger(html, `survival-${filename}.html`);
+}
+
+function downloadFull() {
+  const ids = ['water','fire','shelter','navigation','food','firstaid','signaling','mindset'];
+  const html = buildDoc('Full Reference Guide',
+    ids.map(id => {
+      const el = document.getElementById(id);
+      const label = el?.dataset.label || id;
+      return `<h2>${label}</h2>${sectionHTML(id)}`;
+    }).join('<hr style="margin:2rem 0;border:none;border-top:2px solid #eee"/>')
+  );
+  trigger(html, 'survival-full-reference.html');
+}
+
+function trigger(html, filename) {
+  const blob = new Blob([html], { type: 'text/html' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
 </script>
 </body>
 </html>
