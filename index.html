@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Survival Facts</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #1a1a2e;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      color: #e0e0e0;
+    }
+
+    .card {
+      max-width: 680px;
+      width: 90%;
+      background: #16213e;
+      border: 1px solid #0f3460;
+      border-radius: 12px;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #e94560;
+      margin-bottom: 0.4rem;
+    }
+
+    .category {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #0f3460;
+      background: #0f3460;
+      color: #a0c4ff;
+      display: inline-block;
+      padding: 0.2em 0.8em;
+      border-radius: 999px;
+      margin-bottom: 1.8rem;
+    }
+
+    .fact {
+      font-size: 1.25rem;
+      line-height: 1.7;
+      color: #e0e0e0;
+      min-height: 6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2rem;
+      transition: opacity 0.25s ease;
+    }
+
+    .fact.fade { opacity: 0; }
+
+    .counter {
+      font-size: 0.75rem;
+      color: #555;
+      margin-bottom: 1.5rem;
+    }
+
+    button {
+      background: #e94560;
+      color: #fff;
+      border: none;
+      padding: 0.75rem 2.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    button:hover { background: #c73652; }
+    button:active { transform: scale(0.97); }
+  </style>
+</head>
+<body>
+<div class="card">
+  <h1>Survival Facts</h1>
+  <span class="category" id="category">Loading…</span>
+  <p class="fact" id="fact"></p>
+  <p class="counter" id="counter"></p>
+  <button onclick="nextFact()">Next Fact</button>
+</div>
+
+<script>
+const facts = [
+  { category: "Water", text: "A human can survive roughly 3 days without water, but only 3 weeks without food. Hydration is always the first priority." },
+  { category: "Water", text: "Boiling water for at least 1 minute kills virtually all pathogens. At altitudes above 6,500 ft, boil for 3 minutes." },
+  { category: "Water", text: "Never drink seawater — it contains about 3.5% salt, which forces your kidneys to use more water to flush the salt than you drink." },
+  { category: "Water", text: "You can collect dew by wiping grass with an absorbent cloth before sunrise, then wringing the cloth into a container." },
+  { category: "Water", text: "Cactus water is a myth — the liquid inside most cacti is highly acidic and will cause vomiting, making dehydration worse." },
+  { category: "Fire", text: "The fire triangle: fuel, oxygen, heat. Remove any one element and the fire goes out. Build a notch in your fireboard directly beneath the spindle hole so char falls into a tinder bundle." },
+  { category: "Fire", text: "Birch bark and fatwood (resin-saturated pine) ignite even when damp — always collect them first when building an emergency fire kit." },
+  { category: "Fire", text: "A fire reflector made from logs or rocks behind your fire can double the heat directed toward your shelter." },
+  { category: "Fire", text: "Steel wool and a 9-volt battery will start a fire — touch both terminals to the fine wool and blow gently." },
+  { category: "Shelter", text: "Hypothermia can kill at temperatures well above freezing. A wet, 50°F (10°C) day with wind is more dangerous than a calm, dry 20°F (-7°C) night." },
+  { category: "Shelter", text: "The ground steals body heat 25× faster than still air. Always insulate yourself from the ground before worrying about overhead cover." },
+  { category: "Shelter", text: "A debris hut (a mound of dry leaves and branches piled over a frame) can insulate a person without fire in sub-freezing temperatures." },
+  { category: "Shelter", text: "In a lightning storm, avoid lone tall trees, hilltops, and open water. Crouch low on the balls of your feet in a low-lying area." },
+  { category: "Navigation", text: "The sun rises roughly in the east and sets roughly in the west. At noon in the northern hemisphere, it sits due south; in the southern hemisphere, due north." },
+  { category: "Navigation", text: "A watch can serve as a compass: point the hour hand toward the sun; the halfway point between the hour hand and 12 o'clock is south (northern hemisphere)." },
+  { category: "Navigation", text: "Moss does not reliably grow only on the north side of trees — use it as a hint, not a compass. Flowing water is a better guide; follow it downhill to civilization." },
+  { category: "Navigation", text: "If lost, remember S.T.O.P.: Stop, Think, Observe, Plan. Most wilderness fatalities happen when people panic and keep moving." },
+  { category: "Food", text: "Universal Edibility Test (simplified): separate plant parts, test ONE part at a time. Rub juice on inner wrist — wait 15 min. If no reaction, touch to lip 3 min, then tongue tip 15 min, then chew without swallowing 15 min, then swallow a tiny amount and wait 8 hours. Stop immediately at any burning, numbness, nausea, or rash. Even passing the test does not guarantee safety." },
+  { category: "Food", text: "Insects are the most calorie-efficient wild food. Avoid brightly colored ones, those with a pungent smell, and caterpillars with fine hairs. Cooking kills most parasites." },
+  { category: "Food", text: "Eating without water accelerates dehydration — your body needs water to digest protein. In a true water emergency, skip food until you have a water source." },
+  { category: "Food", text: "White berries are almost always toxic. Red berries are 50/50. Blue and black berries are generally safer — but never rely on color alone." },
+  { category: "First Aid", text: "For severe bleeding: apply firm, direct pressure for at least 10 minutes without lifting the dressing to check. A tourniquet on a limb should be applied 2–3 inches above the wound." },
+  { category: "First Aid", text: "Signs of shock: pale, cool, clammy skin; rapid weak pulse; rapid breathing; confusion. Lay the person flat, elevate legs 12 inches (if no spinal injury), and keep them warm." },
+  { category: "First Aid", text: "Hypothermia treatment: remove wet clothing, insulate from the ground, add dry insulation, and warm the core first — not the extremities." },
+  { category: "First Aid", text: "Snake bite: stay calm, immobilize the bitten limb at or below heart level, and get to medical care. Do NOT cut and suck, apply a tourniquet, or apply ice." },
+  { category: "Signaling", text: "The international distress signal is three of anything: three whistle blasts, three fires in a triangle, three gunshots. Repeat at intervals." },
+  { category: "Signaling", text: "A signal mirror can be seen by aircraft from 10+ miles away. In a pinch, any shiny surface — phone screen, foil, CD — will work." },
+  { category: "Signaling", text: "When building a signal fire, add green leaves or wet moss to create white smoke during the day. At night, a bright flame is more visible." },
+  { category: "Mindset", text: "Survival research consistently shows that mental toughness and the will to live are more predictive of survival than technical skills or physical fitness." },
+  { category: "Mindset", text: "The Rule of Threes: 3 minutes without air, 3 hours in harsh weather without shelter, 3 days without water, 3 weeks without food. This hierarchy should drive every survival decision." },
+];
+
+let order = shuffle([...Array(facts.length).keys()]);
+let idx = 0;
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function showFact(i) {
+  const f = facts[order[i]];
+  document.getElementById('category').textContent = f.category;
+  document.getElementById('fact').textContent = f.text;
+  document.getElementById('counter').textContent = `${i + 1} / ${facts.length}`;
+}
+
+function nextFact() {
+  const el = document.getElementById('fact');
+  el.classList.add('fade');
+  setTimeout(() => {
+    idx = (idx + 1) % facts.length;
+    if (idx === 0) order = shuffle(order);
+    showFact(idx);
+    el.classList.remove('fade');
+  }, 250);
+}
+
+showFact(0);
+</script>
+</body>
+</html>
