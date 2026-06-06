@@ -1,6 +1,6 @@
 services:
   survival-facts:
-    build: .
+    image: ghcr.io/specops13/survival-facts-docker:latest
     ports:
       - "8080:80"
     restart: unless-stopped
