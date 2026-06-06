@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" data-version="3.0.0">
+<html lang="en" data-theme="dark" data-version="3.0.1">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -600,8 +600,20 @@
       border-radius: 6px;
     }
     .rope { fill: none; stroke: #e3b341; stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; }
+    .rope-tail { fill: none; stroke: #f85149; stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; }
     .rope-under { fill: none; stroke: var(--bg); stroke-width: 12; stroke-linecap: round; }
     .knot-label { fill: var(--text-dim); font: 12px system-ui, sans-serif; }
+    .knot-step-bg { fill: none; stroke: var(--border); stroke-width: 1; stroke-dasharray: 4 4; }
+    .knot-step-num { fill: var(--accent); font: 700 15px system-ui, sans-serif; }
+    .knot-check {
+      margin-top: 0.65rem;
+      padding: 0.55rem 0.65rem;
+      border-left: 3px solid var(--accent2);
+      background: rgba(63,185,80,0.08);
+      font-size: 0.8rem;
+    }
+    .knot-legend { margin: 0.65rem 0 0.9rem; color: var(--text-dim); font-size: 0.8rem; }
+    .legend-rope { display: inline-block; width: 28px; height: 5px; border-radius: 4px; vertical-align: middle; margin: 0 0.3rem 0 0.55rem; }
 
 
     /* ── Back to top ──────────────────────────────────────────── */
@@ -653,6 +665,8 @@
       #content { margin-left: 0; padding: 3.5rem 1rem 1.5rem; width: 100%; }
       #back-to-top { bottom: 1rem; right: 1rem; }
       .quick-grid, .kit-grid, .tool-grid, .knot-grid { grid-template-columns: 1fr; }
+      .knot-card { overflow-x: auto; }
+      .knot-diagram { min-width: 620px; }
     }
   </style>
 </head>
@@ -668,7 +682,7 @@
     Survival Wiki
     <div class="logo-sub">
       Field Reference Guide
-      <span class="v2-badge">v3</span>
+      <span class="v2-badge">v3.0.1</span>
     </div>
   </div>
   <input type="search" id="search" placeholder="Search topics… (/)" autocomplete="off" aria-label="Search" />
@@ -1255,60 +1269,108 @@
     </div>
     <div class="section-body">
       <div class="warn-box">These diagrams are for utility and shelter tasks, not climbing, rescue loads, or life safety. Practice with real cordage and inspect every knot before loading it.</div>
+      <p class="knot-legend"><span class="legend-rope" style="background:#e3b341"></span>Standing part <span class="legend-rope" style="background:#f85149"></span>Working end — both colors are the same rope.</p>
       <div class="knot-grid">
         <article class="knot-card">
           <h3 data-search="figure 8 stopper end rope knot">Figure-Eight Stopper</h3>
           <p>Stops a rope end from pulling through a hole or another knot. Easy to inspect and untie.</p>
-          <svg class="knot-diagram" viewBox="0 0 300 180" role="img" aria-label="Figure-eight stopper knot rope diagram">
-            <text class="knot-label" x="12" y="20">standing part</text>
-            <path class="rope" d="M25 40 C95 40 120 72 105 98 C88 126 50 108 62 80 C78 45 157 48 183 83 C209 118 169 146 134 124 C110 109 124 78 153 70 C192 59 235 83 273 143"/>
-            <path class="rope-under" d="M112 91 C124 77 139 72 153 70"/>
-            <path class="rope" d="M112 91 C124 77 139 72 153 70"/>
-            <text class="knot-label" x="226" y="165">working end</text>
+          <svg class="knot-diagram" data-knot="figure-eight" data-knot-steps="3" viewBox="0 0 660 240" role="img" aria-label="Three steps for tying a figure-eight stopper knot">
+            <defs><marker id="arrow-8" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#f85149"/></marker></defs>
+            <rect class="knot-step-bg" x="5" y="5" width="210" height="225" rx="7"/><text class="knot-step-num" x="18" y="28">1. Make an overhand loop</text>
+            <path class="rope" d="M25 115 H112"/>
+            <path class="rope-tail" d="M112 115 C170 115 177 55 128 55 C87 55 87 112 124 124 L184 166" marker-end="url(#arrow-8)"/>
+            <text class="knot-label" x="24" y="102">standing part</text><text class="knot-label" x="145" y="185">working end</text>
+
+            <rect class="knot-step-bg" x="225" y="5" width="210" height="225" rx="7"/><text class="knot-step-num" x="238" y="28">2. Go around behind</text>
+            <path class="rope" d="M244 112 H322"/>
+            <path class="rope-tail" d="M322 112 C381 112 390 55 341 55 C300 55 299 111 337 124 C374 137 402 118 402 86" marker-end="url(#arrow-8)"/>
+            <path class="rope-under" d="M335 123 C350 128 363 129 375 125"/><path class="rope-tail" d="M335 123 C350 128 363 129 375 125"/>
+            <text class="knot-label" x="246" y="190">Wrap the end behind the standing part.</text>
+
+            <rect class="knot-step-bg" x="445" y="5" width="210" height="225" rx="7"/><text class="knot-step-num" x="458" y="28">3. Pass through and dress</text>
+            <path class="rope" d="M465 62 C521 62 546 81 531 108 C513 139 475 126 485 96 C496 62 566 66 592 99 C619 134 579 168 545 145 C521 129 532 102 558 92"/>
+            <path class="rope-under" d="M527 109 C539 99 549 95 558 92"/><path class="rope-tail" d="M527 109 C539 99 549 95 558 92 C586 85 616 111 635 167"/>
+            <text class="knot-label" x="472" y="202">Finished knot has one clear “8” and a usable tail.</text>
           </svg>
           <ol><li>Make a loop.</li><li>Pass the working end around the standing part.</li><li>Feed it back through the original loop and dress into an “8”.</li></ol>
+          <div class="knot-check"><strong>Finished check:</strong> one distinct figure-eight shape, no accidental extra turns, and the working end exits away from the standing part.</div>
         </article>
 
         <article class="knot-card">
           <h3 data-search="bowline fixed loop rescue knot rabbit hole">Bowline</h3>
           <p>Creates a fixed loop that does not tighten under ordinary load. Useful for shelter ridgelines and hauling gear.</p>
-          <svg class="knot-diagram" viewBox="0 0 300 180" role="img" aria-label="Bowline fixed-loop knot rope diagram">
-            <path class="rope" d="M20 35 C80 35 112 48 111 79 C110 111 74 123 61 97 C45 67 81 54 108 74 C141 98 164 150 219 147 C271 144 277 84 240 65 C200 43 151 69 139 101 C126 135 164 146 185 126"/>
-            <path class="rope-under" d="M105 75 C122 84 132 94 139 101"/>
-            <path class="rope" d="M105 75 C122 84 132 94 139 101"/>
-            <text class="knot-label" x="12" y="20">standing part</text>
-            <text class="knot-label" x="204" y="166">fixed loop</text>
+          <svg class="knot-diagram" data-knot="bowline" data-knot-steps="3" viewBox="0 0 660 240" role="img" aria-label="Three steps for tying a bowline">
+            <defs><marker id="arrow-bow" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#f85149"/></marker></defs>
+            <rect class="knot-step-bg" x="5" y="5" width="210" height="225" rx="7"/><text class="knot-step-num" x="18" y="28">1. Form an overhand loop</text>
+            <path class="rope" d="M55 190 V112 C55 68 111 65 113 105 C115 139 73 142 64 116"/>
+            <path class="rope-tail" d="M55 190 C108 205 173 185 180 135"/>
+            <text class="knot-label" x="22" y="210">standing part</text><text class="knot-label" x="145" y="126">working end</text>
+
+            <rect class="knot-step-bg" x="225" y="5" width="210" height="225" rx="7"/><text class="knot-step-num" x="238" y="28">2. Up, around, and back</text>
+            <path class="rope" d="M276 205 V116 C276 78 330 74 331 111 C332 143 293 145 282 121 V76"/>
+            <path class="rope-tail" d="M400 188 C365 197 326 180 307 148 C295 128 300 111 321 111 C351 111 361 77 337 61 C318 49 291 61 282 76" marker-end="url(#arrow-bow)"/>
+            <text class="knot-label" x="240" y="220">End comes up through loop, around standing part, then back down.</text>
+
+            <rect class="knot-step-bg" x="445" y="5" width="210" height="225" rx="7"/><text class="knot-step-num" x="458" y="28">3. Dress the fixed loop</text>
+            <path class="rope" d="M489 210 V94 C489 66 527 64 529 92 C531 116 507 127 493 111"/>
+            <path class="rope" d="M520 111 C542 139 570 191 615 183 C649 177 648 124 622 93 C596 62 550 73 529 103"/>
+            <path class="rope-tail" d="M529 103 C548 83 554 58 532 47 C512 37 493 50 489 69"/>
+            <path class="rope-under" d="M517 111 C523 108 527 105 529 103"/><path class="rope" d="M517 111 C523 108 527 105 529 103"/>
+            <text class="knot-label" x="561" y="207">fixed loop</text><text class="knot-label" x="536" y="43">tail</text>
           </svg>
           <ol><li>Form a small loop in the standing part.</li><li>Bring the working end through it, around the standing part, and back through.</li><li>Tighten while preserving a short tail; add a backup knot for critical utility loads.</li></ol>
+          <div class="knot-check"><strong>Finished check:</strong> the tail is captured inside the small collar, the main loop stays fixed when loaded, and the tail is long enough to back up.</div>
         </article>
 
         <article class="knot-card">
           <h3 data-search="taut line adjustable tent guyline hitch tarp">Taut-Line Hitch</h3>
           <p>An adjustable friction hitch for tent and tarp guylines. It slides when unloaded and grips when tensioned.</p>
-          <svg class="knot-diagram" viewBox="0 0 300 180" role="img" aria-label="Taut-line hitch adjustable rope diagram">
-            <path class="rope" d="M18 70 L282 70"/>
-            <path class="rope" d="M255 145 C218 145 194 122 201 101 C210 77 253 85 251 105 C248 128 197 132 181 105 C163 76 208 42 241 50 C267 56 276 91 258 111"/>
-            <path class="rope-under" d="M196 88 C209 78 230 78 247 88"/>
-            <path class="rope" d="M196 88 C209 78 230 78 247 88"/>
-            <text class="knot-label" x="15" y="55">loaded line</text>
-            <text class="knot-label" x="198" y="165">adjustable hitch</text>
+          <svg class="knot-diagram" data-knot="taut-line" data-knot-steps="3" viewBox="0 0 660 240" role="img" aria-label="Three steps for tying a taut-line hitch">
+            <defs><marker id="arrow-taut" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#f85149"/></marker></defs>
+            <rect class="knot-step-bg" x="5" y="5" width="210" height="225" rx="7"/><text class="knot-step-num" x="18" y="28">1. Return from the anchor</text>
+            <path class="rope" d="M24 102 H190"/><circle cx="185" cy="102" r="20" fill="none" stroke="#6e7781" stroke-width="7"/>
+            <path class="rope-tail" d="M185 122 C175 170 117 178 75 150" marker-end="url(#arrow-taut)"/>
+            <text class="knot-label" x="22" y="88">standing line</text><text class="knot-label" x="151" y="205">anchor</text>
+
+            <rect class="knot-step-bg" x="225" y="5" width="210" height="225" rx="7"/><text class="knot-step-num" x="238" y="28">2. Two turns inside</text>
+            <path class="rope" d="M244 103 H420"/>
+            <path class="rope-tail" d="M407 180 C368 178 335 156 341 132 C348 106 395 112 394 135 C392 160 344 164 326 137 C306 108 346 75 382 82 C414 88 423 120 405 143" marker-end="url(#arrow-taut)"/>
+            <text class="knot-label" x="250" y="205">Both first turns lie toward the anchor, inside the loop.</text>
+
+            <rect class="knot-step-bg" x="445" y="5" width="210" height="225" rx="7"/><text class="knot-step-num" x="458" y="28">3. One turn outside</text>
+            <path class="rope" d="M464 103 H640"/>
+            <path class="rope-tail" d="M620 184 C583 181 556 158 561 136 C567 111 608 115 608 137 C608 158 570 164 553 142 C530 113 561 78 597 82 C628 86 642 113 627 137 C613 158 574 151 550 126 C530 105 513 97 493 99" marker-end="url(#arrow-taut)"/>
+            <text class="knot-label" x="474" y="205">The last half hitch sits away from the anchor.</text>
           </svg>
           <ol><li>Wrap the working end twice inside the loop around the standing line.</li><li>Make one final wrap outside those turns.</li><li>Dress neatly; slide to adjust, then load to grip.</li></ol>
+          <div class="knot-check"><strong>Finished check:</strong> two adjacent turns are inside the guyline loop and one locking half hitch is outside them. It slides only when unloaded.</div>
         </article>
 
         <article class="knot-card">
           <h3 data-search="clove hitch post tree pole lashing knot">Clove Hitch</h3>
           <p>Fast attachment to a post or pole. Best when tension stays steady; back it up if the load may shift.</p>
-          <svg class="knot-diagram" viewBox="0 0 300 180" role="img" aria-label="Clove hitch around a pole rope diagram">
-            <rect x="128" y="15" width="44" height="150" rx="8" fill="#6e7781"/>
-            <path class="rope" d="M20 45 C85 45 105 55 143 74 C185 95 230 97 280 97"/>
-            <path class="rope" d="M20 132 C80 132 112 116 147 99 C188 79 228 62 280 62"/>
-            <path class="rope-under" d="M128 74 C145 83 157 90 172 96"/>
-            <path class="rope" d="M128 74 C145 83 157 90 172 96"/>
-            <text class="knot-label" x="12" y="25">crossing turns</text>
-            <text class="knot-label" x="188" y="155">pole</text>
+          <svg class="knot-diagram" data-knot="clove-hitch" data-knot-steps="3" viewBox="0 0 660 240" role="img" aria-label="Three steps for tying a clove hitch around a post">
+            <defs><marker id="arrow-clove" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#f85149"/></marker></defs>
+            <rect class="knot-step-bg" x="5" y="5" width="210" height="225" rx="7"/><text class="knot-step-num" x="18" y="28">1. First full turn</text>
+            <rect x="91" y="44" width="40" height="150" rx="7" fill="#6e7781"/>
+            <path class="rope" d="M20 72 C62 72 78 82 111 97 C147 113 177 111 202 96"/>
+            <path class="rope-tail" d="M202 96 C177 55 144 48 121 63" marker-end="url(#arrow-clove)"/>
+
+            <rect class="knot-step-bg" x="225" y="5" width="210" height="225" rx="7"/><text class="knot-step-num" x="238" y="28">2. Cross and turn again</text>
+            <rect x="311" y="44" width="40" height="150" rx="7" fill="#6e7781"/>
+            <path class="rope" d="M240 72 C282 72 298 82 331 97 C367 113 397 111 422 96"/>
+            <path class="rope-tail" d="M422 96 C394 68 365 65 335 82 C302 101 276 130 246 137 C282 137 304 145 331 158 C364 174 396 162 413 140" marker-end="url(#arrow-clove)"/>
+            <text class="knot-label" x="244" y="211">The second turn crosses the first diagonally.</text>
+
+            <rect class="knot-step-bg" x="445" y="5" width="210" height="225" rx="7"/><text class="knot-step-num" x="458" y="28">3. Tuck under the bar</text>
+            <rect x="535" y="43" width="40" height="152" rx="7" fill="#6e7781"/>
+            <path class="rope" d="M460 72 C503 72 521 81 555 96 C591 112 621 111 646 97"/>
+            <path class="rope-tail" d="M646 137 C614 137 590 147 555 161 C520 175 487 162 466 145 C499 145 520 132 551 116 C585 98 614 79 642 72"/>
+            <path class="rope-under" d="M537 124 L572 142"/><path class="rope-tail" d="M537 124 L572 142" marker-end="url(#arrow-clove)"/>
+            <text class="knot-label" x="463" y="214">Ends exit between two turns; one diagonal locking bar crosses them.</text>
           </svg>
           <ol><li>Wrap the rope around the post.</li><li>Cross over the standing part and wrap again.</li><li>Tuck the working end under the crossing turn and pull both ends.</li></ol>
+          <div class="knot-check"><strong>Finished check:</strong> two turns encircle the post, a single diagonal locking bar crosses them, and both ends emerge from the center in opposite directions.</div>
         </article>
       </div>
     </div>
@@ -1877,8 +1939,12 @@ const STYLES = `
   .knot-card{border:1px solid #ddd;border-radius:6px;padding:0.8rem}
   .knot-diagram{display:block;width:100%;height:auto;background:#f7f7f7;border:1px solid #ddd;border-radius:5px}
   .rope{fill:none;stroke:#b77900;stroke-width:8;stroke-linecap:round;stroke-linejoin:round}
+  .rope-tail{fill:none;stroke:#c0392b;stroke-width:8;stroke-linecap:round;stroke-linejoin:round}
   .rope-under{fill:none;stroke:#f7f7f7;stroke-width:12;stroke-linecap:round}
   .knot-label{fill:#555;font:12px system-ui,sans-serif}
+  .knot-step-bg{fill:none;stroke:#bbb;stroke-width:1;stroke-dasharray:4 4}
+  .knot-step-num{fill:#1a5276;font:700 15px system-ui,sans-serif}
+  .knot-check{margin-top:0.6rem;padding:0.5rem 0.6rem;border-left:3px solid #196f3d;background:#f0fff4;font-size:0.8rem}
   @media print{body{margin:0;padding:1rem}h2{page-break-before:auto}}
 `;
 

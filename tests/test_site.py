@@ -15,6 +15,8 @@ class SiteParser(HTMLParser):
         self.kit_items = 0
         self.quick_actions = 0
         self.knot_diagrams = 0
+        self.knot_names = set()
+        self.three_step_knots = 0
         self.topic_headings = 0
 
     def handle_starttag(self, tag, attrs):
@@ -27,6 +29,10 @@ class SiteParser(HTMLParser):
             self.quick_actions += 1
         if tag == "svg" and "knot-diagram" in attributes.get("class", "").split():
             self.knot_diagrams += 1
+            if attributes.get("data-knot"):
+                self.knot_names.add(attributes["data-knot"])
+            if attributes.get("data-knot-steps") == "3":
+                self.three_step_knots += 1
         if tag == "h3":
             self.topic_headings += 1
 
@@ -38,8 +44,8 @@ class SurvivalWikiTests(unittest.TestCase):
         cls.parser = SiteParser()
         cls.parser.feed(cls.html)
 
-    def test_version_is_3_0_0(self):
-        self.assertIn('data-version="3.0.0"', self.html)
+    def test_version_is_3_0_1(self):
+        self.assertIn('data-version="3.0.1"', self.html)
 
     def test_required_sections_are_present(self):
         required = {
@@ -70,6 +76,12 @@ class SurvivalWikiTests(unittest.TestCase):
 
     def test_knot_diagrams_and_tools_are_present(self):
         self.assertEqual(self.parser.knot_diagrams, 4)
+        self.assertEqual(self.parser.three_step_knots, 4)
+        self.assertEqual(
+            self.parser.knot_names,
+            {"figure-eight", "bowline", "taut-line", "clove-hitch"},
+        )
+        self.assertEqual(self.html.count('class="knot-check"'), 4)
         for knot in ("Figure-Eight Stopper", "Bowline", "Taut-Line Hitch", "Clove Hitch"):
             self.assertIn(knot, self.html)
         for tool_id in ("planner-condition", "planner-result", "water-people", "water-result"):
