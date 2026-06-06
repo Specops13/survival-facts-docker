@@ -1,13 +1,15 @@
 # Survival Facts
 
-A self-contained survival reference wiki served by nginx in a Docker container.
+A fast, self-contained survival reference wiki served by nginx in a Docker container.
 
 ## Features
 
-- Eight detailed survival reference sections with search, bookmarks, and offline downloads
-- Emergency Quick Actions for lost, injured, cold/wet, and safe-water scenarios
-- Persistent 10-item kit checklist with packing progress
-- Shareable section links, dark/light themes, collapsible sections, and mobile navigation
+- Search-first interface with ranked topic-level results, synonyms, previews, and keyboard navigation
+- Detailed water, fire, shelter, navigation, food, first aid, signaling, mindset, weather, and vehicle guidance
+- Four offline SVG knot diagrams: figure-eight, bowline, taut-line hitch, and clove hitch
+- Survival-priority planner and water-planning estimator
+- Emergency Quick Actions and a persistent 10-item kit checklist
+- Shareable topic links, bookmarks, themes, offline downloads, and mobile navigation
 - Multi-platform Docker image for `amd64` and `arm64`
 
 ## Quick start
@@ -41,7 +43,17 @@ python -m unittest discover -s tests -v
 
 | File | Purpose |
 |------|---------|
-| `index.html` | Single-page survival wiki with interactive field-reference tools |
+| `index.html` | Search-first single-page survival wiki and interactive tools |
 | `Dockerfile` | `nginx:alpine` base, static site copy, and healthcheck |
 | `docker-compose.yml` | Registry image, port mapping, restart policy, and healthcheck |
 | `tests/test_site.py` | Structural regression tests for the page and Docker configuration |
+
+## Safety references
+
+Content is educational and does not replace emergency services or certified training. Key official references include:
+
+- [CDC Heat and Health](https://www.cdc.gov/heat-health/)
+- [National Weather Service Lightning Safety](https://www.weather.gov/safety/lightning)
+- [National Weather Service Flood Safety](https://www.weather.gov/safety/flood)
+- [Ready.gov Car Safety](https://www.ready.gov/car)
+- [OSHA Heat Illness Prevention](https://www.osha.gov/heat-exposure/water-rest-shade)

@@ -14,6 +14,8 @@ class SiteParser(HTMLParser):
         self.ids = set()
         self.kit_items = 0
         self.quick_actions = 0
+        self.knot_diagrams = 0
+        self.topic_headings = 0
 
     def handle_starttag(self, tag, attrs):
         attributes = dict(attrs)
@@ -23,6 +25,10 @@ class SiteParser(HTMLParser):
             self.kit_items += 1
         if tag == "button" and "quick-action" in attributes.get("class", "").split():
             self.quick_actions += 1
+        if tag == "svg" and "knot-diagram" in attributes.get("class", "").split():
+            self.knot_diagrams += 1
+        if tag == "h3":
+            self.topic_headings += 1
 
 
 class SurvivalWikiTests(unittest.TestCase):
@@ -32,13 +38,14 @@ class SurvivalWikiTests(unittest.TestCase):
         cls.parser = SiteParser()
         cls.parser.feed(cls.html)
 
-    def test_version_is_2_1_0(self):
-        self.assertIn('data-version="2.1.0"', self.html)
+    def test_version_is_3_0_0(self):
+        self.assertIn('data-version="3.0.0"', self.html)
 
     def test_required_sections_are_present(self):
         required = {
             "water", "fire", "shelter", "navigation", "food",
-            "firstaid", "signaling", "mindset", "kit", "downloads",
+            "firstaid", "signaling", "mindset", "weather", "vehicle",
+            "knots", "tools", "kit", "downloads",
         }
         self.assertTrue(required.issubset(self.parser.ids))
 
@@ -52,10 +59,21 @@ class SurvivalWikiTests(unittest.TestCase):
         self.assertIn("swiki-kit", self.html)
         self.assertIn('id="kit-progress-bar"', self.html)
 
-    def test_search_and_share_features_are_wired(self):
-        self.assertIn('id="search-status"', self.html)
+    def test_fast_search_and_share_features_are_wired(self):
+        self.assertIn('id="quick-search"', self.html)
+        self.assertIn('id="search-results-list"', self.html)
+        self.assertIn("searchTopics", self.html)
+        self.assertIn("selectedSearchResult", self.html)
+        self.assertGreaterEqual(self.parser.topic_headings, 55)
         self.assertIn("copySectionLink", self.html)
         self.assertIn("navigator.clipboard.writeText", self.html)
+
+    def test_knot_diagrams_and_tools_are_present(self):
+        self.assertEqual(self.parser.knot_diagrams, 4)
+        for knot in ("Figure-Eight Stopper", "Bowline", "Taut-Line Hitch", "Clove Hitch"):
+            self.assertIn(knot, self.html)
+        for tool_id in ("planner-condition", "planner-result", "water-people", "water-result"):
+            self.assertIn(f'id="{tool_id}"', self.html)
 
     def test_compose_uses_registry_image(self):
         compose = (ROOT / "docker-compose.yml").read_text(encoding="utf-8")

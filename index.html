@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" data-version="2.1.0">
+<html lang="en" data-theme="dark" data-version="3.0.0">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -225,6 +225,90 @@
       color: var(--warn);
     }
 
+    .search-hub {
+      margin-top: 1.25rem;
+      padding: 1.1rem;
+      background: linear-gradient(135deg, rgba(88,166,255,0.12), rgba(63,185,80,0.06));
+      border: 1px solid var(--accent);
+      border-radius: 10px;
+    }
+    .search-hub label {
+      display: block;
+      color: #fff;
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    [data-theme="light"] .search-hub label { color: #24292f; }
+    .search-hub > p { margin-bottom: 0.75rem; }
+    .search-box-wrap { position: relative; }
+    #quick-search {
+      width: 100%;
+      padding: 0.8rem 3rem 0.8rem 0.9rem;
+      border: 2px solid var(--accent);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+    }
+    #quick-search:focus { box-shadow: 0 0 0 3px rgba(88,166,255,0.2); }
+    #quick-search::-webkit-search-cancel-button, #search::-webkit-search-cancel-button { appearance: none; }
+    #clear-search {
+      display: none;
+      position: absolute;
+      right: 0.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: transparent;
+      color: var(--text-dim);
+      cursor: pointer;
+      padding: 0.4rem;
+    }
+    .search-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.65rem;
+    }
+    .search-chip {
+      padding: 0.3rem 0.55rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--text-dim);
+      cursor: pointer;
+      font-size: 0.75rem;
+    }
+    .search-chip:hover { color: var(--accent); border-color: var(--accent); }
+    #search-results {
+      display: none;
+      margin-top: 0.75rem;
+      border-top: 1px solid var(--border);
+      padding-top: 0.65rem;
+    }
+    #search-results.visible { display: block; }
+    .search-result {
+      display: block;
+      width: 100%;
+      padding: 0.65rem 0.75rem;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+    }
+    .search-result:hover, .search-result.selected {
+      background: var(--surface);
+      border-color: var(--accent);
+    }
+    .search-result-title { color: var(--accent); font-weight: 700; }
+    .search-result-section { color: var(--text-dim); font-size: 0.72rem; margin-left: 0.35rem; }
+    .search-result-preview { display: block; color: var(--text-dim); font-size: 0.8rem; margin-top: 0.15rem; }
+    #quick-search-status { color: var(--text-dim); font-size: 0.75rem; margin-bottom: 0.35rem; }
+
     .quick-actions {
       margin-top: 1rem;
       padding: 1rem;
@@ -404,9 +488,6 @@
     .dl-card .dl-sub { font-size: 0.75rem; color: var(--text-dim); }
     .dl-card-full { grid-column: 1 / -1; background: rgba(88,166,255,0.06); border-color: var(--accent); }
 
-    #search-status { display: none; color: var(--text-dim); font-size: 0.8rem; margin: -1rem 0 1.5rem; }
-    #no-results { display: none; text-align: center; color: var(--text-dim); padding: 3rem; }
-
     .kit-progress {
       display: flex;
       align-items: center;
@@ -457,6 +538,71 @@
     }
     #reset-kit:hover { border-color: var(--danger); color: var(--danger); }
 
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.8rem;
+    }
+    .tool-card {
+      padding: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .tool-card h3 { margin-top: 0; }
+    .tool-card label { display: block; color: var(--text-dim); font-size: 0.78rem; margin: 0.55rem 0 0.2rem; }
+    .tool-card input[type="number"], .tool-card select {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .tool-card input[type="checkbox"] { accent-color: var(--accent2); margin-right: 0.35rem; }
+    .tool-result {
+      margin-top: 0.75rem;
+      padding: 0.7rem;
+      border-left: 3px solid var(--accent2);
+      background: rgba(63,185,80,0.08);
+      border-radius: 0 5px 5px 0;
+      font-size: 0.85rem;
+    }
+    .priority-list { list-style: none; padding: 0; }
+    .priority-list li {
+      padding: 0.45rem 0.55rem;
+      margin-bottom: 0.35rem;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      background: var(--bg);
+    }
+    .priority-list strong { color: var(--accent); }
+
+    .knot-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.9rem;
+    }
+    .knot-card {
+      padding: 0.9rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .knot-card h3 { margin-top: 0; }
+    .knot-diagram {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin: 0.6rem 0;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    .rope { fill: none; stroke: #e3b341; stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; }
+    .rope-under { fill: none; stroke: var(--bg); stroke-width: 12; stroke-linecap: round; }
+    .knot-label { fill: var(--text-dim); font: 12px system-ui, sans-serif; }
+
 
     /* ── Back to top ──────────────────────────────────────────── */
     #back-to-top {
@@ -506,7 +652,7 @@
       #menu-toggle { display: flex; }
       #content { margin-left: 0; padding: 3.5rem 1rem 1.5rem; width: 100%; }
       #back-to-top { bottom: 1rem; right: 1rem; }
-      .quick-grid, .kit-grid { grid-template-columns: 1fr; }
+      .quick-grid, .kit-grid, .tool-grid, .knot-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -522,7 +668,7 @@
     Survival Wiki
     <div class="logo-sub">
       Field Reference Guide
-      <span class="v2-badge">v2.1</span>
+      <span class="v2-badge">v3</span>
     </div>
   </div>
   <input type="search" id="search" placeholder="Search topics… (/)" autocomplete="off" aria-label="Search" />
@@ -541,6 +687,10 @@
     <a href="#firstaid"><span class="toc-icon">🩹</span> First Aid</a>
     <a href="#signaling"><span class="toc-icon">📡</span> Signaling</a>
     <a href="#mindset"><span class="toc-icon">🧠</span> Mindset</a>
+    <a href="#weather"><span class="toc-icon">⛈</span> Weather Hazards</a>
+    <a href="#vehicle"><span class="toc-icon">🚗</span> Vehicle Survival</a>
+    <a href="#knots"><span class="toc-icon">🪢</span> Essential Knots</a>
+    <a href="#tools"><span class="toc-icon">🧰</span> Planning Tools</a>
     <a href="#kit"><span class="toc-icon">&#10003;</span> Kit Checklist</a>
     <a href="#downloads"><span class="toc-icon">⬇️</span> Downloads</a>
   </nav>
@@ -556,7 +706,27 @@
 
   <div id="hero">
     <h1>Survival Reference Wiki</h1>
-    <p>Comprehensive field reference for wilderness survival — water, fire, shelter, navigation, food, first aid, signaling, and mindset.</p>
+    <p>Fast, offline field reference for wilderness, weather, vehicle, and emergency preparedness.</p>
+    <div class="search-hub">
+      <label for="quick-search">What do you need help with?</label>
+      <p>Search exact topics, symptoms, tools, or situations. Results jump directly to the answer.</p>
+      <div class="search-box-wrap">
+        <input type="search" id="quick-search" placeholder="Try: bleeding, lightning, bowline, lost, purify water..." autocomplete="off" aria-describedby="quick-search-status" />
+        <button id="clear-search" type="button" aria-label="Clear search">✕</button>
+      </div>
+      <div class="search-chips" aria-label="Suggested searches">
+        <button class="search-chip" data-query="lost">I am lost</button>
+        <button class="search-chip" data-query="bleeding">Stop bleeding</button>
+        <button class="search-chip" data-query="lightning">Lightning</button>
+        <button class="search-chip" data-query="water purification">Safe water</button>
+        <button class="search-chip" data-query="bowline">Tie a bowline</button>
+        <button class="search-chip" data-query="stranded vehicle">Stranded car</button>
+      </div>
+      <div id="search-results" role="listbox" aria-label="Search results">
+        <div id="quick-search-status" role="status" aria-live="polite"></div>
+        <div id="search-results-list"></div>
+      </div>
+    </div>
     <div class="disclaimer">
       ⚠️ This guide is for educational and preparedness reference only. Real emergencies require trained professionals. Seek certified wilderness first aid training before relying on any procedure here.
     </div>
@@ -571,9 +741,6 @@
       </div>
     </div>
   </div>
-
-  <div id="search-status" role="status" aria-live="polite"></div>
-  <div id="no-results">No sections match your search.</div>
 
   <!-- ── WATER ─────────────────────────────────────────────── -->
   <section class="wiki-section" id="water" data-label="Water">
@@ -1013,6 +1180,182 @@
     </div>
   </section>
 
+  <section class="wiki-section" id="weather" data-label="Weather Hazards">
+    <div class="section-header">
+      <button class="collapse-btn" aria-label="Toggle section">▼</button>
+      <span class="section-icon">⛈</span>
+      <h2>Weather Hazards</h2>
+      <button class="bookmark-btn" aria-label="Bookmark" data-id="weather">☆</button>
+    </div>
+    <div class="section-body">
+      <h3 data-search="thunder storm thunderstorm electric strike">Lightning</h3>
+      <ul>
+        <li>If you hear thunder, lightning is close enough to strike. Move into a substantial building or hard-topped vehicle.</li>
+        <li>In open country, leave ridges, summits, isolated trees, fences, and exposed water. Spread a group apart to reduce multiple casualties.</li>
+        <li>If no safer shelter exists, minimize your height and ground contact. Do not lie flat. This is a last resort, not a safe position.</li>
+        <li>Wait at least 30 minutes after the last thunder before resuming exposed activity.</li>
+      </ul>
+      <div class="warn-box">Lightning victims do not retain an electrical charge. Call emergency services, begin CPR if needed, and treat burns or trauma.</div>
+
+      <h3 data-search="flood creek river crossing rising water wash">Flash Floods</h3>
+      <ul>
+        <li>Move immediately to higher ground when water rises, turns muddy, carries debris, or you hear a distant roar.</li>
+        <li>Never camp in a dry wash, narrow canyon, or low river terrace when rain is possible upstream.</li>
+        <li>Do not walk or drive through moving floodwater. Depth, road damage, and current strength are difficult to judge.</li>
+      </ul>
+
+      <h3 data-search="hot overheating sweating cramps hydration sun">Extreme Heat</h3>
+      <p><strong>Heat exhaustion</strong> may cause heavy sweating, weakness, nausea, headache, and dizziness. Stop exertion, move to shade, cool the person, and give small amounts of water if fully alert.</p>
+      <p><strong>Heat stroke</strong> may cause confusion, collapse, seizures, or very hot skin. It is a medical emergency: call emergency services and cool rapidly with cold water, wet cloths, and airflow. Do not force fluids into a confused person.</p>
+
+      <h3 data-search="cold wind chill frostbite freezing white numb skin">Frostbite and Severe Cold</h3>
+      <ul>
+        <li>Protect exposed skin, add dry insulation, and block wind before numbness begins.</li>
+        <li>Frostbitten skin may be pale, waxy, hard, or numb. Remove constricting items and protect the area from pressure.</li>
+        <li>Do not rub frostbite or thaw it if refreezing is possible. Seek medical care; rapid rewarming requires controlled warm water and pain management.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="wiki-section" id="vehicle" data-label="Vehicle Survival">
+    <div class="section-header">
+      <button class="collapse-btn" aria-label="Toggle section">▼</button>
+      <span class="section-icon">🚗</span>
+      <h2>Vehicle Survival</h2>
+      <button class="bookmark-btn" aria-label="Bookmark" data-id="vehicle">☆</button>
+    </div>
+    <div class="section-body">
+      <h3 data-search="stranded car broken down snow desert roadside">Stranded Vehicle Priorities</h3>
+      <ol>
+        <li><strong>Get out of traffic danger:</strong> stop as far from travel lanes as safely possible, use hazard lights, and remain belted if collision risk remains.</li>
+        <li><strong>Call or signal:</strong> share road, mile marker, GPS coordinates, direction of travel, vehicle description, occupants, and medical needs.</li>
+        <li><strong>Stay with the vehicle</strong> unless it is unsafe. A vehicle is easier to locate, provides shelter, and carries signaling materials.</li>
+        <li><strong>Manage exposure:</strong> add layers, shade windows in heat, conserve battery, and ration effort rather than water.</li>
+      </ol>
+
+      <h3 data-search="carbon monoxide exhaust snow tailpipe engine heater">Cold Weather and Carbon Monoxide</h3>
+      <ul>
+        <li>Keep the exhaust pipe clear of snow before running the engine.</li>
+        <li>Run the engine only intermittently for heat, crack a downwind window, and check that exhaust is not entering the cabin.</li>
+        <li>Use bright cloth, reflective material, hazard lights, or a raised hood to signal rescuers.</li>
+      </ul>
+      <div class="warn-box">Headache, dizziness, nausea, confusion, or unusual sleepiness can indicate carbon monoxide poisoning. Shut off the engine, move to fresh air, and call for help.</div>
+
+      <h3 data-search="car emergency supplies trunk roadside kit winter desert">Vehicle Emergency Kit</h3>
+      <p>Carry water, shelf-stable food, first aid supplies, flashlight, power bank, warm layers, blanket, rain shell, reflective vest, warning triangles, tire inflator, basic tools, shovel, traction material, paper map, and seasonal supplies.</p>
+    </div>
+  </section>
+
+  <section class="wiki-section" id="knots" data-label="Essential Knots">
+    <div class="section-header">
+      <button class="collapse-btn" aria-label="Toggle section">▼</button>
+      <span class="section-icon">🪢</span>
+      <h2>Essential Knots</h2>
+      <button class="bookmark-btn" aria-label="Bookmark" data-id="knots">☆</button>
+    </div>
+    <div class="section-body">
+      <div class="warn-box">These diagrams are for utility and shelter tasks, not climbing, rescue loads, or life safety. Practice with real cordage and inspect every knot before loading it.</div>
+      <div class="knot-grid">
+        <article class="knot-card">
+          <h3 data-search="figure 8 stopper end rope knot">Figure-Eight Stopper</h3>
+          <p>Stops a rope end from pulling through a hole or another knot. Easy to inspect and untie.</p>
+          <svg class="knot-diagram" viewBox="0 0 300 180" role="img" aria-label="Figure-eight stopper knot rope diagram">
+            <text class="knot-label" x="12" y="20">standing part</text>
+            <path class="rope" d="M25 40 C95 40 120 72 105 98 C88 126 50 108 62 80 C78 45 157 48 183 83 C209 118 169 146 134 124 C110 109 124 78 153 70 C192 59 235 83 273 143"/>
+            <path class="rope-under" d="M112 91 C124 77 139 72 153 70"/>
+            <path class="rope" d="M112 91 C124 77 139 72 153 70"/>
+            <text class="knot-label" x="226" y="165">working end</text>
+          </svg>
+          <ol><li>Make a loop.</li><li>Pass the working end around the standing part.</li><li>Feed it back through the original loop and dress into an “8”.</li></ol>
+        </article>
+
+        <article class="knot-card">
+          <h3 data-search="bowline fixed loop rescue knot rabbit hole">Bowline</h3>
+          <p>Creates a fixed loop that does not tighten under ordinary load. Useful for shelter ridgelines and hauling gear.</p>
+          <svg class="knot-diagram" viewBox="0 0 300 180" role="img" aria-label="Bowline fixed-loop knot rope diagram">
+            <path class="rope" d="M20 35 C80 35 112 48 111 79 C110 111 74 123 61 97 C45 67 81 54 108 74 C141 98 164 150 219 147 C271 144 277 84 240 65 C200 43 151 69 139 101 C126 135 164 146 185 126"/>
+            <path class="rope-under" d="M105 75 C122 84 132 94 139 101"/>
+            <path class="rope" d="M105 75 C122 84 132 94 139 101"/>
+            <text class="knot-label" x="12" y="20">standing part</text>
+            <text class="knot-label" x="204" y="166">fixed loop</text>
+          </svg>
+          <ol><li>Form a small loop in the standing part.</li><li>Bring the working end through it, around the standing part, and back through.</li><li>Tighten while preserving a short tail; add a backup knot for critical utility loads.</li></ol>
+        </article>
+
+        <article class="knot-card">
+          <h3 data-search="taut line adjustable tent guyline hitch tarp">Taut-Line Hitch</h3>
+          <p>An adjustable friction hitch for tent and tarp guylines. It slides when unloaded and grips when tensioned.</p>
+          <svg class="knot-diagram" viewBox="0 0 300 180" role="img" aria-label="Taut-line hitch adjustable rope diagram">
+            <path class="rope" d="M18 70 L282 70"/>
+            <path class="rope" d="M255 145 C218 145 194 122 201 101 C210 77 253 85 251 105 C248 128 197 132 181 105 C163 76 208 42 241 50 C267 56 276 91 258 111"/>
+            <path class="rope-under" d="M196 88 C209 78 230 78 247 88"/>
+            <path class="rope" d="M196 88 C209 78 230 78 247 88"/>
+            <text class="knot-label" x="15" y="55">loaded line</text>
+            <text class="knot-label" x="198" y="165">adjustable hitch</text>
+          </svg>
+          <ol><li>Wrap the working end twice inside the loop around the standing line.</li><li>Make one final wrap outside those turns.</li><li>Dress neatly; slide to adjust, then load to grip.</li></ol>
+        </article>
+
+        <article class="knot-card">
+          <h3 data-search="clove hitch post tree pole lashing knot">Clove Hitch</h3>
+          <p>Fast attachment to a post or pole. Best when tension stays steady; back it up if the load may shift.</p>
+          <svg class="knot-diagram" viewBox="0 0 300 180" role="img" aria-label="Clove hitch around a pole rope diagram">
+            <rect x="128" y="15" width="44" height="150" rx="8" fill="#6e7781"/>
+            <path class="rope" d="M20 45 C85 45 105 55 143 74 C185 95 230 97 280 97"/>
+            <path class="rope" d="M20 132 C80 132 112 116 147 99 C188 79 228 62 280 62"/>
+            <path class="rope-under" d="M128 74 C145 83 157 90 172 96"/>
+            <path class="rope" d="M128 74 C145 83 157 90 172 96"/>
+            <text class="knot-label" x="12" y="25">crossing turns</text>
+            <text class="knot-label" x="188" y="155">pole</text>
+          </svg>
+          <ol><li>Wrap the rope around the post.</li><li>Cross over the standing part and wrap again.</li><li>Tuck the working end under the crossing turn and pull both ends.</li></ol>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="wiki-section" id="tools" data-label="Planning Tools">
+    <div class="section-header">
+      <button class="collapse-btn" aria-label="Toggle section">▼</button>
+      <span class="section-icon">🧰</span>
+      <h2>Planning Tools</h2>
+      <button class="bookmark-btn" aria-label="Bookmark" data-id="tools">☆</button>
+    </div>
+    <div class="section-body">
+      <div class="tool-grid">
+        <div class="tool-card">
+          <h3 data-search="priority planner what do first decision emergency">Survival Priority Planner</h3>
+          <label for="planner-condition">Primary situation</label>
+          <select id="planner-condition">
+            <option value="lost">Lost or overdue</option>
+            <option value="injury">Injury or illness</option>
+            <option value="cold">Cold, wet, or exposed</option>
+            <option value="heat">Extreme heat</option>
+            <option value="vehicle">Stranded vehicle</option>
+          </select>
+          <label><input type="checkbox" id="planner-danger"> Immediate environmental danger</label>
+          <label><input type="checkbox" id="planner-signal"> Able to call or signal</label>
+          <div id="planner-result" class="tool-result" aria-live="polite"></div>
+        </div>
+        <div class="tool-card">
+          <h3 data-search="water calculator hydration liters estimate heat exertion">Water Planning Estimate</h3>
+          <label for="water-people">People</label>
+          <input id="water-people" type="number" min="1" max="20" value="1">
+          <label for="water-hours">Hours</label>
+          <input id="water-hours" type="number" min="1" max="168" value="8">
+          <label for="water-condition">Conditions</label>
+          <select id="water-condition">
+            <option value="0.125">Cool / resting</option>
+            <option value="0.25" selected>Moderate activity</option>
+            <option value="0.7">Hot / heavy activity</option>
+          </select>
+          <div id="water-result" class="tool-result" aria-live="polite"></div>
+          <p><small>Planning estimate only. Individual needs vary with health, climate, altitude, food, and exertion. Do not force excessive water intake.</small></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ── DOWNLOADS ──────────────────────────────────────────── -->
   <section class="wiki-section" id="kit" data-label="Kit Checklist">
     <div class="section-header">
@@ -1057,7 +1400,7 @@
         <div class="dl-card dl-card-full" onclick="downloadFull()">
           <div class="dl-icon">📚</div>
           <div class="dl-title">Full Reference Guide</div>
-          <div class="dl-sub">All 8 sections — complete offline wiki</div>
+          <div class="dl-sub">All reference sections — complete offline wiki</div>
         </div>
         <div class="dl-card" onclick="downloadSection('water','💧 Water','water')">
           <div class="dl-icon">💧</div>
@@ -1098,6 +1441,21 @@
           <div class="dl-icon">🧠</div>
           <div class="dl-title">Mindset</div>
           <div class="dl-sub">STOP, Rule of Threes, psychology</div>
+        </div>
+        <div class="dl-card" onclick="downloadSection('weather','⛈ Weather Hazards','weather')">
+          <div class="dl-icon">⛈</div>
+          <div class="dl-title">Weather Hazards</div>
+          <div class="dl-sub">Lightning, floods, heat, and cold</div>
+        </div>
+        <div class="dl-card" onclick="downloadSection('vehicle','🚗 Vehicle Survival','vehicle')">
+          <div class="dl-icon">🚗</div>
+          <div class="dl-title">Vehicle Survival</div>
+          <div class="dl-sub">Breakdowns, winter safety, and kits</div>
+        </div>
+        <div class="dl-card" onclick="downloadSection('knots','🪢 Essential Knots','knots')">
+          <div class="dl-icon">🪢</div>
+          <div class="dl-title">Essential Knots</div>
+          <div class="dl-sub">Four knots with offline diagrams</div>
         </div>
       </div>
     </div>
@@ -1153,72 +1511,141 @@ overlay.addEventListener('click', closeSidebar);
 
 // ── Search ───────────────────────────────────────────────────────
 const searchInput = document.getElementById('search');
+const quickSearch = document.getElementById('quick-search');
+const clearSearch = document.getElementById('clear-search');
+const searchResults = document.getElementById('search-results');
+const searchResultsList = document.getElementById('search-results-list');
+const quickSearchStatus = document.getElementById('quick-search-status');
 const sections = document.querySelectorAll('.wiki-section');
-const noResults = document.getElementById('no-results');
-const searchStatus = document.getElementById('search-status');
+let selectedSearchResult = -1;
 
-searchInput.addEventListener('input', () => {
-  const q = searchInput.value.trim().toLowerCase();
-  let visible = 0;
-  sections.forEach(sec => {
-    const body = sec.querySelector('.section-body');
-    if (!q) {
-      sec.style.display = '';
-      body.style.display = '';
-      removeHighlights(sec);
-      visible++;
-      return;
-    }
-    const text = sec.textContent.toLowerCase();
-    if (text.includes(q)) {
-      sec.style.display = '';
-      body.style.display = 'block'; // force-show even if collapsed
-      highlightText(sec, q);
-      visible++;
-    } else {
-      sec.style.display = 'none';
-    }
-  });
-  noResults.style.display = visible === 0 ? 'block' : 'none';
-  searchStatus.style.display = q ? 'block' : 'none';
-  searchStatus.textContent = q ? `${visible} section${visible === 1 ? '' : 's'} matched "${searchInput.value.trim()}"` : '';
+const searchAliases = {
+  lost: 'stop navigation signal rescue location',
+  bleeding: 'wound hemorrhage pressure tourniquet injury',
+  water: 'hydrate dehydration purification filter boil bleach',
+  cold: 'hypothermia frostbite wet warmth shelter',
+  hot: 'heat stroke exhaustion cramps sun overheating',
+  car: 'vehicle stranded roadside snow exhaust carbon monoxide',
+  rope: 'knots bowline clove taut line figure eight cordage',
+  storm: 'weather lightning thunder flood rain wind'
+};
+
+const searchIndex = [...document.querySelectorAll('.wiki-section h3')].map((heading, index) => {
+  const section = heading.closest('.wiki-section');
+  const content = [];
+  let node = heading.nextElementSibling;
+  while (node && node.tagName !== 'H3') {
+    content.push(node.textContent.trim());
+    node = node.nextElementSibling;
+  }
+  heading.id = heading.id || `topic-${index + 1}`;
+  return {
+    heading,
+    section,
+    sectionLabel: section.dataset.label,
+    title: heading.textContent.trim(),
+    text: content.join(' ').replace(/\s+/g, ' ').trim(),
+    aliases: heading.dataset.search || ''
+  };
 });
 
-function highlightText(node, q) {
-  removeHighlights(node);
-  const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
-  const matches = [];
-  while (walker.nextNode()) {
-    const n = walker.currentNode;
-    if (n.nodeValue.toLowerCase().includes(q)) matches.push(n);
-  }
-  matches.forEach(n => {
-    const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-    const frag = document.createDocumentFragment();
-    n.nodeValue.split(re).forEach(part => {
-      if (part.toLowerCase() === q) {
-        const mark = document.createElement('mark');
-        mark.textContent = part;
-        frag.appendChild(mark);
-      } else {
-        frag.appendChild(document.createTextNode(part));
-      }
+function searchTopics(query) {
+  const terms = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
+  if (!terms.length) return [];
+  return searchIndex.map(item => {
+    const title = item.title.toLowerCase();
+    const haystack = `${title} ${item.sectionLabel.toLowerCase()} ${item.aliases.toLowerCase()} ${item.text.toLowerCase()}`;
+    let score = 0;
+    terms.forEach(term => {
+      const expanded = `${term} ${searchAliases[term] || ''}`.split(/\s+/).filter(Boolean);
+      if (title === term) score += 20;
+      if (title.includes(term)) score += 10;
+      if (item.aliases.toLowerCase().includes(term)) score += 6;
+      if (expanded.some(word => haystack.includes(word))) score += 2;
     });
-    n.parentNode.replaceChild(frag, n);
+    return { ...item, score };
+  }).filter(item => item.score > 0).sort((a, b) => b.score - a.score || a.title.localeCompare(b.title)).slice(0, 8);
+}
+
+function openSearchResult(item) {
+  item.section.classList.remove('collapsed');
+  saveCollapseState();
+  history.replaceState(null, '', `#${item.heading.id}`);
+  item.heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  item.heading.animate(
+    [{ backgroundColor: 'rgba(88,166,255,0.35)' }, { backgroundColor: 'transparent' }],
+    { duration: 1600 }
+  );
+}
+
+function renderSearch(query) {
+  const results = searchTopics(query);
+  selectedSearchResult = results.length ? 0 : -1;
+  clearSearch.style.display = query ? 'block' : 'none';
+  searchResults.classList.toggle('visible', Boolean(query));
+  searchResultsList.innerHTML = '';
+  if (!query) {
+    quickSearchStatus.textContent = '';
+    return;
+  }
+  quickSearchStatus.textContent = results.length
+    ? `${results.length} fast result${results.length === 1 ? '' : 's'} — use ↑ ↓ and Enter`
+    : `No topic found for "${query}". Try a broader word.`;
+  results.forEach((item, index) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = `search-result${index === selectedSearchResult ? ' selected' : ''}`;
+    button.setAttribute('role', 'option');
+    button.setAttribute('aria-selected', index === selectedSearchResult ? 'true' : 'false');
+    const preview = item.text.slice(0, 150) + (item.text.length > 150 ? '…' : '');
+    button.innerHTML = `<span class="search-result-title">${item.title}</span><span class="search-result-section">${item.sectionLabel}</span><span class="search-result-preview">${preview}</span>`;
+    button.addEventListener('click', () => openSearchResult(item));
+    searchResultsList.appendChild(button);
   });
 }
 
-function removeHighlights(node) {
-  node.querySelectorAll('mark').forEach(m => {
-    m.parentNode.replaceChild(document.createTextNode(m.textContent), m);
-  });
+function setSearchValue(value) {
+  quickSearch.value = value;
+  searchInput.value = value;
+  renderSearch(value.trim());
 }
+
+quickSearch.addEventListener('input', () => setSearchValue(quickSearch.value));
+searchInput.addEventListener('input', () => {
+  setSearchValue(searchInput.value);
+  quickSearch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+clearSearch.addEventListener('click', () => {
+  setSearchValue('');
+  quickSearch.focus();
+});
+document.querySelectorAll('.search-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    setSearchValue(chip.dataset.query);
+    quickSearch.focus();
+  });
+});
+quickSearch.addEventListener('keydown', e => {
+  const buttons = [...searchResultsList.querySelectorAll('.search-result')];
+  if (!buttons.length) return;
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    selectedSearchResult = (selectedSearchResult + (e.key === 'ArrowDown' ? 1 : -1) + buttons.length) % buttons.length;
+    buttons.forEach((button, index) => {
+      button.classList.toggle('selected', index === selectedSearchResult);
+      button.setAttribute('aria-selected', index === selectedSearchResult ? 'true' : 'false');
+    });
+  }
+  if (e.key === 'Enter' && selectedSearchResult >= 0) {
+    e.preventDefault();
+    buttons[selectedSearchResult].click();
+  }
+});
 
 // ── Keyboard shortcut: / focuses search ─────────────────────────
 document.querySelectorAll('.quick-action').forEach(btn => {
   btn.addEventListener('click', () => {
-    searchInput.value = '';
-    searchInput.dispatchEvent(new Event('input'));
+    setSearchValue('');
     const sec = document.getElementById(btn.dataset.target);
     if (!sec) return;
     sec.classList.remove('collapsed');
@@ -1230,13 +1657,14 @@ document.querySelectorAll('.quick-action').forEach(btn => {
 });
 
 document.addEventListener('keydown', e => {
-  if (e.key === '/' && document.activeElement !== searchInput) {
+  if (e.key === '/' && !['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
     e.preventDefault();
-    searchInput.focus();
-    searchInput.select();
+    quickSearch.focus();
+    quickSearch.select();
   }
-  if (e.key === 'Escape' && document.activeElement === searchInput) {
-    searchInput.blur();
+  if (e.key === 'Escape' && (document.activeElement === searchInput || document.activeElement === quickSearch)) {
+    setSearchValue('');
+    document.activeElement.blur();
   }
 });
 
@@ -1388,6 +1816,42 @@ document.getElementById('reset-kit').addEventListener('click', () => {
 });
 renderKit();
 
+const priorityPlans = {
+  lost: ['Stop moving and use STOP', 'Call or signal with location details', 'Treat injuries and exposure', 'Build visible shelter', 'Conserve energy and mark your position'],
+  injury: ['Control life-threatening bleeding and airway problems', 'Call or activate emergency signaling', 'Prevent shock and exposure', 'Stabilize the injury', 'Plan evacuation only when movement is safer'],
+  cold: ['Get out of wind and precipitation', 'Remove wet layers and insulate from the ground', 'Add dry insulation and shelter', 'Warm the torso gradually', 'Signal before energy and visibility decline'],
+  heat: ['Stop exertion and move to shade', 'Call for confusion, collapse, or seizures', 'Cool with water, wet cloths, and airflow', 'Give small drinks only if fully alert', 'Avoid returning to exertion'],
+  vehicle: ['Move out of traffic danger', 'Call and share exact location', 'Stay with the vehicle unless unsafe', 'Manage heat, cold, and carbon monoxide', 'Make the vehicle highly visible']
+};
+const plannerCondition = document.getElementById('planner-condition');
+const plannerDanger = document.getElementById('planner-danger');
+const plannerSignal = document.getElementById('planner-signal');
+const plannerResult = document.getElementById('planner-result');
+
+function renderPriorityPlan() {
+  const steps = [...priorityPlans[plannerCondition.value]];
+  if (plannerDanger.checked) steps.unshift('Move away from the immediate hazard without creating a worse one');
+  if (!plannerSignal.checked) steps.splice(1, 0, 'Prepare whistle, mirror, fire, ground signal, or other visible distress signal');
+  plannerResult.innerHTML = `<ol class="priority-list">${steps.map((step, index) => `<li><strong>${index + 1}.</strong> ${step}</li>`).join('')}</ol>`;
+}
+[plannerCondition, plannerDanger, plannerSignal].forEach(control => control.addEventListener('change', renderPriorityPlan));
+renderPriorityPlan();
+
+const waterPeople = document.getElementById('water-people');
+const waterHours = document.getElementById('water-hours');
+const waterCondition = document.getElementById('water-condition');
+const waterResult = document.getElementById('water-result');
+
+function renderWaterEstimate() {
+  const people = Math.max(1, Number(waterPeople.value) || 1);
+  const hours = Math.max(1, Number(waterHours.value) || 1);
+  const liters = people * hours * Number(waterCondition.value);
+  const gallons = liters * 0.264172;
+  waterResult.innerHTML = `<strong>${liters.toFixed(1)} L (${gallons.toFixed(1)} US gal)</strong><br>Planning amount for ${people} ${people === 1 ? 'person' : 'people'} over ${hours} hours, before reserve water.`;
+}
+[waterPeople, waterHours, waterCondition].forEach(control => control.addEventListener('input', renderWaterEstimate));
+renderWaterEstimate();
+
 // Close sidebar on TOC link click (mobile)
 tocLinks.forEach(a => {
   a.addEventListener('click', () => { if (window.innerWidth <= 700) closeSidebar(); });
@@ -1409,6 +1873,12 @@ const STYLES = `
   tr:nth-child(even) td{background:#f9f9f9}
   .warn{border-left:3px solid #c0392b;background:#fff0ee;color:#c0392b;padding:0.5rem 0.8rem;margin:0.7rem 0;font-size:0.85rem;border-radius:0 4px 4px 0}
   .tip{border-left:3px solid #196f3d;background:#f0fff4;color:#196f3d;padding:0.5rem 0.8rem;margin:0.7rem 0;font-size:0.85rem;border-radius:0 4px 4px 0}
+  .knot-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.8rem}
+  .knot-card{border:1px solid #ddd;border-radius:6px;padding:0.8rem}
+  .knot-diagram{display:block;width:100%;height:auto;background:#f7f7f7;border:1px solid #ddd;border-radius:5px}
+  .rope{fill:none;stroke:#b77900;stroke-width:8;stroke-linecap:round;stroke-linejoin:round}
+  .rope-under{fill:none;stroke:#f7f7f7;stroke-width:12;stroke-linecap:round}
+  .knot-label{fill:#555;font:12px system-ui,sans-serif}
   @media print{body{margin:0;padding:1rem}h2{page-break-before:auto}}
 `;
 
@@ -1440,7 +1910,7 @@ function downloadSection(id, title, filename) {
 }
 
 function downloadFull() {
-  const ids = ['water','fire','shelter','navigation','food','firstaid','signaling','mindset','kit'];
+  const ids = ['water','fire','shelter','navigation','food','firstaid','signaling','mindset','weather','vehicle','knots','kit'];
   const body = ids.map(id => {
     const el = document.getElementById(id);
     const label = el?.dataset.label || id;
