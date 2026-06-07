@@ -18,6 +18,8 @@ class SiteParser(HTMLParser):
         self.knot_names = set()
         self.three_step_knots = 0
         self.knot_photos = 0
+        self.reference_photos = 0
+        self.reference_categories = set()
         self.topic_headings = 0
 
     def handle_starttag(self, tag, attrs):
@@ -36,6 +38,10 @@ class SiteParser(HTMLParser):
                 self.three_step_knots += 1
         if tag == "figure" and "knot-photo" in attributes.get("class", "").split():
             self.knot_photos += 1
+        if tag == "figure" and "reference-photo" in attributes.get("class", "").split():
+            self.reference_photos += 1
+            if attributes.get("data-reference-category"):
+                self.reference_categories.add(attributes["data-reference-category"])
         if tag == "h3":
             self.topic_headings += 1
 
@@ -47,8 +53,8 @@ class SurvivalWikiTests(unittest.TestCase):
         cls.parser = SiteParser()
         cls.parser.feed(cls.html)
 
-    def test_version_is_3_1_0(self):
-        self.assertIn('data-version="3.1.0"', self.html)
+    def test_version_is_3_2_0(self):
+        self.assertIn('data-version="3.2.0"', self.html)
 
     def test_required_sections_are_present(self):
         required = {
@@ -101,6 +107,25 @@ class SurvivalWikiTests(unittest.TestCase):
             self.assertIn(knot, self.html)
         for tool_id in ("planner-condition", "planner-result", "water-people", "water-result"):
             self.assertIn(f'id="{tool_id}"', self.html)
+
+    def test_category_reference_photos_are_local_and_attributed(self):
+        expected = {
+            "water": "water-purification.jpg",
+            "fire": "campfire.jpg",
+            "shelter": "lean-to-shelter.jpg",
+            "navigation": "map-compass.jpg",
+            "firstaid": "medical-kit.jpg",
+            "signaling": "signal-mirror.jpg",
+            "weather": "lightning.jpg",
+            "vehicle": "vehicle-kit.jpg",
+        }
+        self.assertEqual(self.parser.reference_photos, len(expected))
+        self.assertEqual(self.parser.reference_categories, set(expected))
+        self.assertEqual(self.html.count('class="reference-photo"'), len(expected))
+        self.assertGreaterEqual(self.html.count("public domain"), len(expected))
+        for filename in expected.values():
+            self.assertTrue((ROOT / "assets" / "references" / filename).is_file())
+            self.assertIn(f"assets/references/{filename}", self.html)
 
     def test_compose_uses_registry_image(self):
         compose = (ROOT / "docker-compose.yml").read_text(encoding="utf-8")

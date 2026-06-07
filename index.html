@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" data-version="3.1.0">
+<html lang="en" data-theme="dark" data-version="3.2.0">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -610,6 +610,33 @@
       line-height: 1.45;
     }
     .knot-photo a { color: var(--accent); }
+    .knot-photo[data-knot-photo="figure-eight"] img {
+      height: auto;
+      object-fit: contain;
+    }
+    .reference-photo {
+      max-width: 680px;
+      margin: 0.8rem auto 1rem;
+      overflow: hidden;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+    }
+    .reference-photo img {
+      display: block;
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+    .reference-photo figcaption {
+      padding: 0.5rem 0.65rem;
+      color: var(--text-dim);
+      font-size: 0.75rem;
+      line-height: 1.45;
+    }
+    .reference-photo a { color: var(--accent); }
+    .reference-photo[data-reference-category="signaling"] img { object-position: center 12%; }
+    .reference-photo[data-reference-category="vehicle"] img { object-position: center 82%; }
     .knot-diagram {
       display: block;
       width: 100%;
@@ -702,7 +729,7 @@
     Survival Wiki
     <div class="logo-sub">
       Field Reference Guide
-      <span class="v2-badge">v3.1.0</span>
+      <span class="v2-badge">v3.2.0</span>
     </div>
   </div>
   <input type="search" id="search" placeholder="Search topics… (/)" autocomplete="off" aria-label="Search" />
@@ -815,6 +842,10 @@
       <div class="warn-box">Never drink seawater. Never drink urine. The salt content causes your kidneys to use more water than you consume, accelerating dehydration. Cactus fluid (except barrel cactus in small amounts) is highly acidic and will cause vomiting.</div>
 
       <h3>Purification Methods</h3>
+      <figure class="reference-photo" data-reference-category="water">
+        <img src="assets/references/water-purification.jpg" alt="A portable water purifier being carried for field distribution" loading="lazy">
+        <figcaption><strong>Real-world reference:</strong> a portable field water purifier. Photo: Spc. Jesse Gross, U.S. Army / <a href="https://commons.wikimedia.org/wiki/File:Water_filter_and_purifier_distribution_DVIDS207321.jpg">Wikimedia Commons</a>, public domain.</figcaption>
+      </figure>
       <table>
         <tr><th>Method</th><th>How</th><th>Kills</th><th>Notes</th></tr>
         <tr><td>Boiling</td><td>Rolling boil 1 min (3 min above 2000 m)</td><td>All pathogens</td><td>Best all-round method; does not remove chemicals</td></tr>
@@ -838,6 +869,10 @@
     <div class="section-body">
 
       <h3>The Fire Triangle</h3>
+      <figure class="reference-photo" data-reference-category="fire">
+        <img src="assets/references/campfire.jpg" alt="Campers tending a small fire inside an established metal fire ring" loading="lazy">
+        <figcaption><strong>Real-world reference:</strong> a small campfire contained in an established fire ring. Photo: Emily Hassell, National Park Service / <a href="https://commons.wikimedia.org/wiki/File:Standing_around_a_campfire_in_Jumbo_Rocks_Campground_(50409225106).jpg">Wikimedia Commons</a>, public domain.</figcaption>
+      </figure>
       <p>Every fire requires <strong>heat + fuel + oxygen</strong>. Removing any one element extinguishes it. Building a fire is a progression from smallest to largest fuel: tinder → kindling → fuel wood. Never skip steps.</p>
 
       <h3>Site Preparation</h3>
@@ -904,6 +939,10 @@
       </ul>
 
       <h3>Lean-to</h3>
+      <figure class="reference-photo" data-reference-category="shelter">
+        <img src="assets/references/lean-to-shelter.jpg" alt="A three-sided backcountry lean-to shelter surrounded by forest" loading="lazy">
+        <figcaption><strong>Real-world reference:</strong> a durable three-sided lean-to showing a roof, wind-blocking back wall, and open front. Photo: Ken Gallager / <a href="https://commons.wikimedia.org/wiki/File:ChimneyPondLT.jpg">Wikimedia Commons</a>, public domain.</figcaption>
+      </figure>
       <p>Quickest structure. Lash a horizontal ridgepole between two trees at shoulder height. Lean branches densely against it at 45°. Layer bark, leaves, and debris from bottom to top like roof shingles (minimum 15 cm thick). Build a reflector fire in front for radiant heat. Open-fronted; poor in heavy rain or cold without a fire.</p>
 
       <h3>Debris Hut</h3>
@@ -940,6 +979,10 @@
     <div class="section-body">
 
       <h3>STOP First</h3>
+      <figure class="reference-photo" data-reference-category="navigation">
+        <img src="assets/references/map-compass.jpg" alt="A group plotting a position with a paper chart and compass" loading="lazy">
+        <figcaption><strong>Real-world reference:</strong> plotting a position with a paper chart and compass before moving. Photo: MC1 Stacy D. Laseter, U.S. Navy / <a href="https://commons.wikimedia.org/wiki/File:Sailors_train_to_use_a_chart_and_compass_to_plot_their_location._(38039914011).jpg">Wikimedia Commons</a>, public domain.</figcaption>
+      </figure>
       <p><strong>Stop, Think, Observe, Plan.</strong> Moving while lost increases your search area exponentially and burns energy. Stop as soon as you suspect you're lost. Most rescues happen within 3 km of the last known point.</p>
 
       <h3>Solar Navigation</h3>
@@ -1046,6 +1089,10 @@
     <div class="section-body">
 
       <div class="warn-box">This section is a quick reference. It does not replace Wilderness First Aid (WFA) or Wilderness First Responder (WFR) training. Seek professional certification.</div>
+      <figure class="reference-photo" data-reference-category="firstaid">
+        <img src="assets/references/medical-kit.jpg" alt="An open first aid kit with bandages, tape, scissors, and other supplies" loading="lazy">
+        <figcaption><strong>Real-world reference:</strong> a stocked first-aid kit with dressings, tape, and scissors ready for use. Photo: Centers for Disease Control and Prevention / <a href="https://commons.wikimedia.org/wiki/File:A-first-aid-kit.jpg">Wikimedia Commons</a>, public domain.</figcaption>
+      </figure>
 
       <h3>Bleeding Control</h3>
       <ul>
@@ -1140,6 +1187,10 @@
       </ul>
 
       <h3>Mirror Signaling</h3>
+      <figure class="reference-photo" data-reference-category="signaling">
+        <img src="assets/references/signal-mirror.jpg" alt="A person aiming an emergency signal mirror toward an aircraft" loading="lazy">
+        <figcaption><strong>Real-world reference:</strong> aiming a sighted emergency mirror toward an aircraft. Photo: Cpl. Michael L. Haas, U.S. Marine Corps / <a href="https://commons.wikimedia.org/wiki/File:Signal_mirror_2x3_plastic_USMC.jpg">Wikimedia Commons</a>, public domain.</figcaption>
+      </figure>
       <p>A signal mirror can be seen from <strong>over 15 km</strong> by aircraft on a sunny day. Aim: hold the mirror near your eye, extend your other hand in a V sign, aim the reflected sunspot through the V at the target aircraft. Flash repeatedly — even random reflection in a search area alerts rescuers.</p>
       <div class="tip-box">Any reflective surface works: phone screen, foil, CD, watch face, polished metal. You don't need a purpose-built mirror.</div>
 
@@ -1223,6 +1274,10 @@
     </div>
     <div class="section-body">
       <h3 data-search="thunder storm thunderstorm electric strike">Lightning</h3>
+      <figure class="reference-photo" data-reference-category="weather">
+        <img src="assets/references/lightning.jpg" alt="Multiple cloud-to-ground lightning branches during a nighttime storm" loading="lazy">
+        <figcaption><strong>Real-world reference:</strong> multiple cloud-to-ground lightning channels during a nighttime storm. Photo: NOAA / <a href="https://commons.wikimedia.org/wiki/File:Lightning_NOAA.jpg">Wikimedia Commons</a>, public domain.</figcaption>
+      </figure>
       <ul>
         <li>If you hear thunder, lightning is close enough to strike. Move into a substantial building or hard-topped vehicle.</li>
         <li>In open country, leave ridges, summits, isolated trees, fences, and exposed water. Spread a group apart to reduce multiple casualties.</li>
@@ -1276,6 +1331,10 @@
       <div class="warn-box">Headache, dizziness, nausea, confusion, or unusual sleepiness can indicate carbon monoxide poisoning. Shut off the engine, move to fresh air, and call for help.</div>
 
       <h3 data-search="car emergency supplies trunk roadside kit winter desert">Vehicle Emergency Kit</h3>
+      <figure class="reference-photo" data-reference-category="vehicle">
+        <img src="assets/references/vehicle-kit.jpg" alt="A vehicle cargo area stocked with food, first aid, blanket, flashlight, warning triangle, and winter tools" loading="lazy">
+        <figcaption><strong>Real-world reference:</strong> a vehicle emergency kit staged in the cargo area for quick access. Photo: Kendra Williams, U.S. Air Force / <a href="https://commons.wikimedia.org/wiki/File:Offutt_Air_Force_Base_emergency_safety_kit_in_back_of_Honda_Element.jpg">Wikimedia Commons</a>, public domain.</figcaption>
+      </figure>
       <p>Carry water, shelf-stable food, first aid supplies, flashlight, power bank, warm layers, blanket, rain shell, reflective vest, warning triangles, tire inflator, basic tools, shovel, traction material, paper map, and seasonal supplies.</p>
     </div>
   </section>
@@ -1294,7 +1353,7 @@
         <article class="knot-card">
           <h3 data-search="figure 8 stopper end rope knot">Figure-Eight Stopper</h3>
           <p>Stops a rope end from pulling through a hole or another knot. Easy to inspect and untie.</p>
-          <figure class="knot-photo">
+          <figure class="knot-photo" data-knot-photo="figure-eight">
             <img src="assets/knots/figure-eight-real-world.jpg" alt="A loose and a dressed figure-eight stopper tied in white rope" loading="lazy">
             <figcaption><strong>Real-world reference:</strong> loose and dressed figure-eight stoppers. Photo: Just plain Bill, <a href="https://commons.wikimedia.org/wiki/File:Figure_eight_knot.JPG">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>.</figcaption>
           </figure>
@@ -1976,6 +2035,12 @@ const STYLES = `
   .knot-photo{margin:0.6rem 0;border:1px solid #ddd;border-radius:5px;overflow:hidden}
   .knot-photo img{display:block;width:100%;height:230px;object-fit:cover}
   .knot-photo figcaption{padding:0.4rem 0.55rem;color:#555;font-size:0.72rem;line-height:1.4}
+  .knot-photo[data-knot-photo="figure-eight"] img{height:auto;object-fit:contain}
+  .reference-photo{max-width:680px;margin:0.8rem auto 1rem;border:1px solid #ddd;border-radius:6px;overflow:hidden}
+  .reference-photo img{display:block;width:100%;height:300px;object-fit:cover}
+  .reference-photo figcaption{padding:0.45rem 0.6rem;color:#555;font-size:0.75rem;line-height:1.4}
+  .reference-photo[data-reference-category="signaling"] img{object-position:center 12%}
+  .reference-photo[data-reference-category="vehicle"] img{object-position:center 82%}
   .knot-diagram{display:block;width:100%;height:auto;background:#f7f7f7;border:1px solid #ddd;border-radius:5px}
   .rope{fill:none;stroke:#b77900;stroke-width:8;stroke-linecap:round;stroke-linejoin:round}
   .rope-tail{fill:none;stroke:#c0392b;stroke-width:8;stroke-linecap:round;stroke-linejoin:round}

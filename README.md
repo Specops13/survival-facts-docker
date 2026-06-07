@@ -7,6 +7,7 @@ A fast, self-contained survival reference wiki served by nginx in a Docker conta
 - Search-first interface with ranked topic-level results, synonyms, previews, and keyboard navigation
 - Detailed water, fire, shelter, navigation, food, first aid, signaling, mindset, weather, and vehicle guidance
 - Four offline knot guides with real-world reference photos and three-stage SVG diagrams: figure-eight, bowline, taut-line hitch, and clove hitch
+- Public-domain real-world reference photos for water, fire, shelter, navigation, first aid, signaling, weather, and vehicle preparedness
 - Each knot uses a three-stage tying sequence, contrasting working end, and finished-knot checkpoints
 - Survival-priority planner and water-planning estimator
 - Emergency Quick Actions and a persistent 10-item kit checklist
