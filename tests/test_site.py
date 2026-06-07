@@ -17,6 +17,7 @@ class SiteParser(HTMLParser):
         self.knot_diagrams = 0
         self.knot_names = set()
         self.three_step_knots = 0
+        self.knot_photos = 0
         self.topic_headings = 0
 
     def handle_starttag(self, tag, attrs):
@@ -33,6 +34,8 @@ class SiteParser(HTMLParser):
                 self.knot_names.add(attributes["data-knot"])
             if attributes.get("data-knot-steps") == "3":
                 self.three_step_knots += 1
+        if tag == "figure" and "knot-photo" in attributes.get("class", "").split():
+            self.knot_photos += 1
         if tag == "h3":
             self.topic_headings += 1
 
@@ -44,8 +47,8 @@ class SurvivalWikiTests(unittest.TestCase):
         cls.parser = SiteParser()
         cls.parser.feed(cls.html)
 
-    def test_version_is_3_0_1(self):
-        self.assertIn('data-version="3.0.1"', self.html)
+    def test_version_is_3_1_0(self):
+        self.assertIn('data-version="3.1.0"', self.html)
 
     def test_required_sections_are_present(self):
         required = {
@@ -77,11 +80,23 @@ class SurvivalWikiTests(unittest.TestCase):
     def test_knot_diagrams_and_tools_are_present(self):
         self.assertEqual(self.parser.knot_diagrams, 4)
         self.assertEqual(self.parser.three_step_knots, 4)
+        self.assertEqual(self.parser.knot_photos, 4)
         self.assertEqual(
             self.parser.knot_names,
             {"figure-eight", "bowline", "taut-line", "clove-hitch"},
         )
         self.assertEqual(self.html.count('class="knot-check"'), 4)
+        self.assertEqual(self.html.count('class="knot-photo"'), 4)
+        self.assertIn("inlineLocalImages", self.html)
+        for filename in (
+            "figure-eight-real-world.jpg",
+            "bowline-real-world.jpg",
+            "taut-line-real-world.jpg",
+            "clove-hitch-real-world.jpg",
+        ):
+            self.assertTrue((ROOT / "assets" / "knots" / filename).is_file())
+        self.assertIn("Clove_Hitch_-_ABoK_11_-_USCG.jpg", self.html)
+        self.assertIn("CC0 public domain dedication", self.html)
         for knot in ("Figure-Eight Stopper", "Bowline", "Taut-Line Hitch", "Clove Hitch"):
             self.assertIn(knot, self.html)
         for tool_id in ("planner-condition", "planner-result", "water-people", "water-result"):
@@ -95,6 +110,7 @@ class SurvivalWikiTests(unittest.TestCase):
     def test_dockerfile_copies_site_and_has_healthcheck(self):
         dockerfile = (ROOT / "Dockerfile").read_text(encoding="utf-8")
         self.assertIn("COPY index.html /usr/share/nginx/html/index.html", dockerfile)
+        self.assertIn("COPY assets /usr/share/nginx/html/assets", dockerfile)
         self.assertIn("HEALTHCHECK", dockerfile)
 
     def test_inline_script_has_balanced_braces(self):

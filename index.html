@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" data-version="3.0.1">
+<html lang="en" data-theme="dark" data-version="3.1.0">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -590,6 +590,26 @@
       border-radius: 8px;
     }
     .knot-card h3 { margin-top: 0; }
+    .knot-photo {
+      margin: 0.65rem 0;
+      overflow: hidden;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    .knot-photo img {
+      display: block;
+      width: 100%;
+      height: 230px;
+      object-fit: cover;
+    }
+    .knot-photo figcaption {
+      padding: 0.45rem 0.6rem;
+      color: var(--text-dim);
+      font-size: 0.72rem;
+      line-height: 1.45;
+    }
+    .knot-photo a { color: var(--accent); }
     .knot-diagram {
       display: block;
       width: 100%;
@@ -682,7 +702,7 @@
     Survival Wiki
     <div class="logo-sub">
       Field Reference Guide
-      <span class="v2-badge">v3.0.1</span>
+      <span class="v2-badge">v3.1.0</span>
     </div>
   </div>
   <input type="search" id="search" placeholder="Search topics… (/)" autocomplete="off" aria-label="Search" />
@@ -1274,6 +1294,10 @@
         <article class="knot-card">
           <h3 data-search="figure 8 stopper end rope knot">Figure-Eight Stopper</h3>
           <p>Stops a rope end from pulling through a hole or another knot. Easy to inspect and untie.</p>
+          <figure class="knot-photo">
+            <img src="assets/knots/figure-eight-real-world.jpg" alt="A loose and a dressed figure-eight stopper tied in white rope" loading="lazy">
+            <figcaption><strong>Real-world reference:</strong> loose and dressed figure-eight stoppers. Photo: Just plain Bill, <a href="https://commons.wikimedia.org/wiki/File:Figure_eight_knot.JPG">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>.</figcaption>
+          </figure>
           <svg class="knot-diagram" data-knot="figure-eight" data-knot-steps="3" viewBox="0 0 660 240" role="img" aria-label="Three steps for tying a figure-eight stopper knot">
             <defs><marker id="arrow-8" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#f85149"/></marker></defs>
             <rect class="knot-step-bg" x="5" y="5" width="210" height="225" rx="7"/><text class="knot-step-num" x="18" y="28">1. Make an overhand loop</text>
@@ -1299,6 +1323,10 @@
         <article class="knot-card">
           <h3 data-search="bowline fixed loop rescue knot rabbit hole">Bowline</h3>
           <p>Creates a fixed loop that does not tighten under ordinary load. Useful for shelter ridgelines and hauling gear.</p>
+          <figure class="knot-photo">
+            <img src="assets/knots/bowline-real-world.jpg" alt="A finished bowline tied in multicolored rope with its fixed loop visible" loading="lazy">
+            <figcaption><strong>Real-world reference:</strong> a dressed bowline with the fixed loop visible. Photo: Anup Sadi, <a href="https://commons.wikimedia.org/wiki/File:Bowline_Knot.jpg">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</figcaption>
+          </figure>
           <svg class="knot-diagram" data-knot="bowline" data-knot-steps="3" viewBox="0 0 660 240" role="img" aria-label="Three steps for tying a bowline">
             <defs><marker id="arrow-bow" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#f85149"/></marker></defs>
             <rect class="knot-step-bg" x="5" y="5" width="210" height="225" rx="7"/><text class="knot-step-num" x="18" y="28">1. Form an overhand loop</text>
@@ -1325,6 +1353,10 @@
         <article class="knot-card">
           <h3 data-search="taut line adjustable tent guyline hitch tarp">Taut-Line Hitch</h3>
           <p>An adjustable friction hitch for tent and tarp guylines. It slides when unloaded and grips when tensioned.</p>
+          <figure class="knot-photo">
+            <img src="assets/knots/taut-line-real-world.jpg" alt="A finished taut-line hitch tied with blue cord around a standing line" loading="lazy">
+            <figcaption><strong>Real-world reference:</strong> a dressed taut-line hitch showing two inside turns and the outside locking turn. Photo: Chris 73 / <a href="https://commons.wikimedia.org/wiki/File:Taut_Line_Hitch_Final.jpg">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>.</figcaption>
+          </figure>
           <svg class="knot-diagram" data-knot="taut-line" data-knot-steps="3" viewBox="0 0 660 240" role="img" aria-label="Three steps for tying a taut-line hitch">
             <defs><marker id="arrow-taut" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#f85149"/></marker></defs>
             <rect class="knot-step-bg" x="5" y="5" width="210" height="225" rx="7"/><text class="knot-step-num" x="18" y="28">1. Return from the anchor</text>
@@ -1349,6 +1381,10 @@
         <article class="knot-card">
           <h3 data-search="clove hitch post tree pole lashing knot">Clove Hitch</h3>
           <p>Fast attachment to a post or pole. Best when tension stays steady; back it up if the load may shift.</p>
+          <figure class="knot-photo">
+            <img src="assets/knots/clove-hitch-real-world.jpg" alt="A finished clove hitch tied with blue rope around a wooden post" loading="lazy">
+            <figcaption><strong>Real-world reference:</strong> a dressed clove hitch around a wooden post. Photo: USCG PTC Developer, <a href="https://commons.wikimedia.org/wiki/File:Clove_Hitch_-_ABoK_11_-_USCG.jpg">Wikimedia Commons</a>, <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 public domain dedication</a>.</figcaption>
+          </figure>
           <svg class="knot-diagram" data-knot="clove-hitch" data-knot-steps="3" viewBox="0 0 660 240" role="img" aria-label="Three steps for tying a clove hitch around a post">
             <defs><marker id="arrow-clove" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#f85149"/></marker></defs>
             <rect class="knot-step-bg" x="5" y="5" width="210" height="225" rx="7"/><text class="knot-step-num" x="18" y="28">1. First full turn</text>
@@ -1937,6 +1973,9 @@ const STYLES = `
   .tip{border-left:3px solid #196f3d;background:#f0fff4;color:#196f3d;padding:0.5rem 0.8rem;margin:0.7rem 0;font-size:0.85rem;border-radius:0 4px 4px 0}
   .knot-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.8rem}
   .knot-card{border:1px solid #ddd;border-radius:6px;padding:0.8rem}
+  .knot-photo{margin:0.6rem 0;border:1px solid #ddd;border-radius:5px;overflow:hidden}
+  .knot-photo img{display:block;width:100%;height:230px;object-fit:cover}
+  .knot-photo figcaption{padding:0.4rem 0.55rem;color:#555;font-size:0.72rem;line-height:1.4}
   .knot-diagram{display:block;width:100%;height:auto;background:#f7f7f7;border:1px solid #ddd;border-radius:5px}
   .rope{fill:none;stroke:#b77900;stroke-width:8;stroke-linecap:round;stroke-linejoin:round}
   .rope-tail{fill:none;stroke:#c0392b;stroke-width:8;stroke-linecap:round;stroke-linejoin:round}
@@ -1971,17 +2010,39 @@ function sectionHTML(id) {
   return clone.innerHTML;
 }
 
-function downloadSection(id, title, filename) {
-  trigger(buildDoc(title, sectionHTML(id)), `survival-${filename}.html`);
+async function inlineLocalImages(html) {
+  const template = document.createElement('template');
+  template.innerHTML = html;
+  const images = [...template.content.querySelectorAll('img[src]')];
+  await Promise.all(images.map(async image => {
+    try {
+      const response = await fetch(image.getAttribute('src'));
+      const blob = await response.blob();
+      image.src = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    } catch (error) {
+      console.warn('Could not embed offline image:', image.getAttribute('src'), error);
+    }
+  }));
+  return template.innerHTML;
 }
 
-function downloadFull() {
+async function downloadSection(id, title, filename) {
+  const body = await inlineLocalImages(sectionHTML(id));
+  trigger(buildDoc(title, body), `survival-${filename}.html`);
+}
+
+async function downloadFull() {
   const ids = ['water','fire','shelter','navigation','food','firstaid','signaling','mindset','weather','vehicle','knots','kit'];
-  const body = ids.map(id => {
+  const body = await inlineLocalImages(ids.map(id => {
     const el = document.getElementById(id);
     const label = el?.dataset.label || id;
     return `<h2>${label}</h2>${sectionHTML(id)}`;
-  }).join('<hr style="margin:2rem 0;border:none;border-top:2px solid #eee"/>');
+  }).join('<hr style="margin:2rem 0;border:none;border-top:2px solid #eee"/>'));
   trigger(buildDoc('Full Reference Guide', body), 'survival-full-reference.html');
 }
 
